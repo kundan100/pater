@@ -2,7 +2,7 @@
   "name": "@kundan100/pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "index.js",
   "files": ["src"],
   "license": "MIT"
 }
