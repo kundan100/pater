@@ -1,8 +1,19 @@
 {
-  "name": "@kundan100/pater",
+  "name": "pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
   "version": "1.0.0",
   "main": "index.js",
-  "files": ["src"],
-  "license": "MIT"
+  "files": [
+    "src"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0"
+  },
+  "scripts": {
+    "publish:env": "dotenv -e .env -- npm publish --//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
