@@ -1,6 +1,6 @@
 {
-  "name": "@kundan100/devpa",
-  "description": "dev's personal assistant for recurring workflows. Its terminal based utility."
+  "name": "@kundan100/pater",
+  "description": "personal assistant in terminal for devs, for recurring workflows.",
   "version": "1.0.0",
   "main": "src/index.js",
   "files": ["src"],
