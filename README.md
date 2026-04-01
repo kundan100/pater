@@ -1,2 +1,2 @@
-# devpa
-dev's personal assistant for recurring workflows. Its terminal based utility.
+# pater
+`personal assistant in terminal` for devs, for recurring workflows.
