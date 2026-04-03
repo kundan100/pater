@@ -1,0 +1,17 @@
+[
+    {
+        "repo": "REPO1_ROOT",
+        "files": [
+            "ui\\package.json",
+            "ui\\.husky\\pre-commit",
+            "ui\\base.webpack.config.js",
+            "ui\\shared\\components\\src\\state\\auth\\context.tsx"
+        ]
+    },
+    {
+        "repo": "REPO2_ROOT",
+        "files": [
+            "package.json"
+        ]
+    }
+]
