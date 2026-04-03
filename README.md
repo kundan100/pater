@@ -1,6 +1,6 @@
 # pater
 `personal assistant in terminal` for devs, for recurring workflows.
-
+![Main Menu](./assets/cover/cover_image.jpg)
 
 # project setup for local dev
 1. clone the repo.
