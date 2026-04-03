@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+# blocked files (one per line)
+blocked_files="
+ui/.husky/pre-commit
+ui/package.json
+ui/base.webpack.config.js
+ui/cypress.config.ts
+ui/shared/components/src/state/auth/context.tsx
+ui/shared/components/src/state/feature/context.tsx
+ui/shared/components/src/api/index.ts
+"
+# check staged files and abort if any blocked file is present
+for blocked_file in $blocked_files; do
+  if git diff --cached --name-only | grep -q "^$blocked_file$"; then
+    echo "cyk--10-1 > pre-commit: ERROR: committing $blocked_file is forbidden."
+    echo "cyk--10-1 > pre-commit:  Please revert changes or unstage the file and try again."
+    exit 1
+  fi
+done
+
+cd ui
+npm run lint-staged

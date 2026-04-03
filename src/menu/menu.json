@@ -1,0 +1,36 @@
+[
+  { 
+    "key": "kill_port",
+    "label": "Kill Port",
+    "subMenus": [
+      {
+        "key": "tbd",
+        "label": "to be decided later"
+      }
+    ]
+  },
+  { 
+    "key": "copy_local_changes",
+    "label": "Copy Local Changes"
+  },
+  { 
+    "key": "status",
+    "label": "Show status"
+  },
+  { 
+    "key": "start",
+    "label": "Start service"
+  },
+  { 
+    "key": "stop",
+    "label": "Stop service"
+  },
+  { 
+    "key": "clear_temp_files",
+    "label": "System > Performance > Clear temp files"
+  },
+  { 
+    "key": "exit",
+    "label": "Exit"
+  }
+]
