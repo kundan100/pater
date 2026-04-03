@@ -1,7 +1,7 @@
 {
   "name": "@kundan100/pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "imports": {
     "#config":     "./config.js",
     "#shared/*":   "./src/shared/*.js",
@@ -14,7 +14,9 @@
     "pater": "index.js"
   },
   "files": [
-    "src"
+    "src",
+    "config.js",
+    "assets"
   ],
   "license": "MIT",
   "scripts": {
