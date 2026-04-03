@@ -1,18 +1,36 @@
 {
-  "name": "pater",
+  "name": "@kundan100/pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "main": "index.js",
+  "bin": {
+    "pater": "index.js"
+  },
   "files": [
     "src"
   ],
   "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish:env": "dotenv -e .env -- npm publish --registry=https://registry.npmjs.org/",
+    "publish:env-1-old-and-not-working": "dotenv -e .env -- npm publish --//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+  },
+  "dependencies": {},
   "devDependencies": {
     "dotenv-cli": "^11.0.0"
   },
-  "scripts": {
-    "publish:env": "dotenv -e .env -- npm publish --//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+  "engines": {
+    "node": ">=20.12.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kundan100/pater.git"
+  },
+  "author": "kundan100",
+  "bugs": {
+    "url": "https://github.com/kundan100/pater/issues"
+  },
+  "homepage": "https://github.com/kundan100/pater#readme",
   "publishConfig": {
     "access": "public"
   }
