@@ -35,3 +35,33 @@
 1. Add a menu-option in file (`src\menu\menu.json`).
 2. Create a utility (e.g. `src\features\system\clearTempFiles.js`)
 3. Consume this newly created utility in file (`src\menu\index.js`)
+
+
+# command options
+- Help:
+```bash
+pater --help
+```
+
+- Basic:
+```bash
+pater
+# prints: Welcome cyk-pa!
+```
+
+- Version:
+```bash
+pater --version
+```
+
+- Echo (test arg forwarding):
+```bash
+pater --echo "hello"
+# prints: hello
+```
+
+- Verbose (prints debug info to stderr):
+```bash
+pater --verbose --echo hi
+# prints debug info to stderr then 'hi' to stdout
+```
