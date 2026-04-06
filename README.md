@@ -6,7 +6,7 @@
 | -------------------------------------------- |
 
 
-# how to use
+# <mark>how to use</mark>
 1. for installation, run command `npm install -g @kundan100/pater`
 2. for usage, run command `pater`.
 3. few features run out of box without any configuration e.g.
@@ -64,7 +64,7 @@ pater --verbose --echo hi
 <details>
 <summary>Dev Notes</summary>
 
-### <mark>Project setup for local dev</mark>
+### Project setup for local dev
 1. clone the repo.
 2. create a file (.env for local use only) in project root.
     1. add this line `NPM_TOKEN=your-npm-token-for-publishing`
@@ -84,7 +84,7 @@ pater --verbose --echo hi
     1. increase version number in package.json.
     2. run command (`npm run publish:env`)
 
-### <mark>How to add new feature in this utility</mark>
+### How to add new feature in this utility
 1. Add a menu-option in file (`src\menu\menu.json`).
 2. Create a utility (e.g. `src\features\system\clearTempFiles.js`)
 3. Consume this newly created utility in file (`src\menu\index.js`)
