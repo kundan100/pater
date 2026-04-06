@@ -5,10 +5,11 @@
 process.env.FORCE_COLOR = process.env.FORCE_COLOR || '1';
 
 const handleArgs = require('#args/handleArgs');
+const pkg = require('./package.json');
 const clog = require('#shared/clog-with-fallback');
 
 // startup banner — shown every time the CLI is invoked
-clog.log('Welcome pater!');
+clog.log(`Welcome pater (v${pkg.version})!`);
 
 // capture CLI arguments (excluding `node` and script path)
 const args = process.argv.slice(2);
