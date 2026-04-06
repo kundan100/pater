@@ -7,8 +7,6 @@ const userConfig = {
   // ---------------------------------------------------------------------------
   // USER CONFIG — edit these to match your environment
   // ---------------------------------------------------------------------------
-  REPO1_ROOT: 'D:\\kk\\zeb_codes\\phoenix-services',
-  REPO2_ROOT: 'D:\\kk\\zeb_codes\\zds-react',
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: false,
   SELECTED_APPROACH__COPY_LOCAL_CHANGES: 'APPROACH_2',
 };
@@ -23,15 +21,13 @@ const APPROACHES = {
 
 const config = {
   // ----- Setting REPO PATHS and other important items
-  REPO1_ROOT: userConfig.REPO1_ROOT,
-  REPO2_ROOT: userConfig.REPO2_ROOT,
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: userConfig.OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG,
   // ----- Setting APPROACH SELECTIONS
   SELECTED_APPROACH: {
     COPY_LOCAL_CHANGES: APPROACHES.COPY_LOCAL_CHANGES[userConfig.SELECTED_APPROACH__COPY_LOCAL_CHANGES],
   },
   // ------ Derived paths based on root paths
-  get REPO1_PARENT_DIR() { return path.resolve(this.REPO1_ROOT, '..'); },
+  // get REPO1_PARENT_DIR() { return path.resolve(this.REPO1_ROOT, '..'); },
 };
 
 module.exports = config;

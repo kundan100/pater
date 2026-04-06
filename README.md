@@ -69,11 +69,13 @@ pater --verbose --echo hi
 2. create a file (.env for local use only) in project root.
     1. add this line `NPM_TOKEN=your-npm-token-for-publishing`
 3. Configuration before running (follow sample)
-    1. update .\config.js
-        - REPO1_ROOT
-        - REPO2_ROOT
-    2. update .\src\features\copy-local-changes\local-changes-manifest.json
-        - add list of files which needs to have local changes.
+    1. app level configuration
+        - update `.\config.js`
+        - OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG
+    2. feature level configuration
+        - update `.\src\features\copy-local-changes\local-changes-manifest.json`
+        - provide `repoRoot`
+        - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
     1. run caommand `node index.js`, from project root.
 5. done.
