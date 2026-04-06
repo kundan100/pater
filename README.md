@@ -20,16 +20,16 @@
 # feature list
 1. kill port
     - when propmted, enter port-number and hit ENTER key.
-2. Copy Local Changes
+2. System > Performance > Clear temp files
+    - will clean temp files.
+3. Copy Local Changes
     - use case: keep local changes in a local companion file and apply these changes in actual source file when needed.
     - In your repo, make a copy of any source file and rename that by adding a prefix `cykLocal__`.
     - You can gitignore/exclude this file from showing up in git-changes section.
     - update `.\config.js` and `.\src\features\copy-local-changes\local-changes-manifest.json` as explained in section `Project setup for local dev`
-3. Show status
-4. Start service
-5. Stop service
-6. System > Performance > Clear temp files
-    - will clean temp files.
+4. Show status
+5. Start service
+6. Stop service
 7. exit
 
 # command options

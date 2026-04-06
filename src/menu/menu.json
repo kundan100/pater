@@ -10,6 +10,10 @@
     ]
   },
   { 
+    "key": "clear_temp_files",
+    "label": "System > Performance > Clear temp files"
+  },
+  { 
     "key": "copy_local_changes",
     "label": "Copy Local Changes"
   },
@@ -24,10 +28,6 @@
   { 
     "key": "stop",
     "label": "Stop service"
-  },
-  { 
-    "key": "clear_temp_files",
-    "label": "System > Performance > Clear temp files"
   },
   { 
     "key": "exit",
