@@ -9,8 +9,28 @@
 # how to use
 1. for installation, run command `npm install -g @kundan100/pater`
 2. for usage, run command `pater`.
+3. few features run out of box without any configuration e.g.
+    1. feature: kill port
+    2. feature: System > Performance > Clear temp files
+4. few features need some configuration (e.g.your project-local-path)
+    1. feature: Copy Local Changes
 3. done.
 
+
+# feature list
+1. kill port
+    - when propmted, enter port-number and hit ENTER key.
+2. Copy Local Changes
+    - use case: keep local changes in a local companion file and apply these changes in actual source file when needed.
+    - In your repo, make a copy of any source file and rename that by adding a prefix `cykLocal__`.
+    - You can gitignore/exclude this file from showing up in git-changes section.
+    - update `.\config.js` and `.\src\features\copy-local-changes\local-changes-manifest.json` as explained in section `Project setup for local dev`
+3. Show status
+4. Start service
+5. Stop service
+6. System > Performance > Clear temp files
+    - will clean temp files.
+7. exit
 
 # command options
 - Help:
