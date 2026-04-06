@@ -7,6 +7,7 @@ Usage: pater [options]
 Options:
   -h, --help        Show this help message
   -v, --version     Print version
+  --config          Print path to app's config file
   --verbose         Print verbose debug info
   --echo <message>  Echo the provided message
 `);

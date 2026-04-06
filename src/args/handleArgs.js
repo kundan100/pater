@@ -4,6 +4,7 @@ function handleArgs(args) {
   // parse flags
   const helpRequested = args.includes('-h') || args.includes('--help');
   const versionRequested = args.includes('--version') || args.includes('-v');
+  const appConfigDetailsRequested = args.includes('--config');
   const verboseRequested = args.includes('--verbose');
   const echoRequested = args.includes('--echo');
   // use a switch over booleans for clearer single-dispatch handling
@@ -18,6 +19,12 @@ function handleArgs(args) {
       // delegate version printing to dedicated module
       const { printVersion } = require('./appVersion/appVersion');
       printVersion();
+      return { handled: true, code: 0 };
+    }
+    case appConfigDetailsRequested: {
+      // delegate app config details printing to dedicated module
+      const { appConfig } = require('./appConfig/appConfig');
+      appConfig();
       return { handled: true, code: 0 };
     }
     case echoRequested: {
