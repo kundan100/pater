@@ -3,8 +3,15 @@
 // Edit this file when your repo is checked out at a different location.
 const path = require('path');
 
-// Approach enums — grouped under APPROACHES for scalability
-// Values match the actual folder names under each feature's directory.
+const userConfig = {
+  // ---------------------------------------------------------------------------
+  // USER CONFIG — edit these to match your environment
+  // ---------------------------------------------------------------------------
+  OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: false,
+  SELECTED_APPROACH__COPY_LOCAL_CHANGES: 'APPROACH_2',
+};
+
+// Approach enums — Values match the actual folder names under each feature's directory.
 const APPROACHES = {
   COPY_LOCAL_CHANGES: {
     APPROACH_1: 'approach-1-keep-files-with-local-changes-inside-utility/copyLocalChanges',
@@ -13,23 +20,14 @@ const APPROACHES = {
 };
 
 const config = {
-  // ---------------------------------------------------------------------------
-  // USER SETTINGS — edit these to match your environment
-  // ---------------------------------------------------------------------------
-  REPO1_ROOT: 'D:\\kk\\zeb_codes\\phoenix-services',
-  REPO2_ROOT: 'D:\\kk\\zeb_codes\\zds-react',
-
-  // ---------------------------------------------------------------------------
-  // ADMIN SETTINGS — edit these to match your environment
-  // ---------------------------------------------------------------------------
+  // ----- Setting REPO PATHS and other important items
+  OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: userConfig.OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG,
+  // ----- Setting APPROACH SELECTIONS
   SELECTED_APPROACH: {
-    COPY_LOCAL_CHANGES: APPROACHES.COPY_LOCAL_CHANGES.APPROACH_2,
+    COPY_LOCAL_CHANGES: APPROACHES.COPY_LOCAL_CHANGES[userConfig.SELECTED_APPROACH__COPY_LOCAL_CHANGES],
   },
-
-  // ---------------------------------------------------------------------------
-  // DERIVED / COMPUTED — do not edit below this line
-  // ---------------------------------------------------------------------------
-  get REPO1_PARENT_DIR() { return path.resolve(this.REPO1_ROOT, '..'); },
+  // ------ Derived paths based on root paths
+  // get REPO1_PARENT_DIR() { return path.resolve(this.REPO1_ROOT, '..'); },
 };
 
 module.exports = config;
