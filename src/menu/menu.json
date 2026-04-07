@@ -2,6 +2,7 @@
   { 
     "key": "kill_port",
     "label": "Kill Port",
+    "enabled": true,
     "subMenus": [
       {
         "key": "tbd",
@@ -11,26 +12,32 @@
   },
   { 
     "key": "clear_temp_files",
-    "label": "System > Performance > Clear temp files"
+    "label": "System > Performance > Clear temp files",
+    "enabled": true
   },
   { 
     "key": "copy_local_changes",
-    "label": "Copy Local Changes"
+    "label": "Copy Local Changes",
+    "enabled": true
   },
   { 
     "key": "status",
-    "label": "Show status"
+    "label": "Show status",
+    "enabled": true
   },
   { 
     "key": "start",
-    "label": "Start service"
+    "label": "Start service",
+    "enabled": true
   },
   { 
     "key": "stop",
-    "label": "Stop service"
+    "label": "Stop service",
+    "enabled": true
   },
   { 
     "key": "exit",
-    "label": "Exit"
+    "label": "Exit",
+    "enabled": false
   }
 ]
