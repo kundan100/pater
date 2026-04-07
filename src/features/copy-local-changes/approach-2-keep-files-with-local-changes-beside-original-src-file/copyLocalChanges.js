@@ -24,10 +24,10 @@ const CYK_PREFIX = 'cykLocal__';
 
 function copyAll({ dryRun = false, verbose = false } = {}) {
   for (const entry of manifest) {
-    // resolve repo root: entry.repo is a key name in config (e.g. "REPO1_ROOT")
-    const repoRoot = config[entry.repo];
+    // get repoRoot from the manifest for more flexibility and less coupling with config.js
+    const repoRoot = entry.repoRoot;
     if (!repoRoot) {
-      throw new Error(`config key "${entry.repo}" not found in config.js`);
+      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);
     }
 
     for (const relPath of entry.files) {
