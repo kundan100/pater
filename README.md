@@ -26,9 +26,10 @@
     - You can gitignore/exclude this file from showing up in git-changes section.
     - update `.\config.js` and `.\src\features\copy-local-changes\local-changes-manifest.json` as explained in section `Project setup for local dev`
 4. Show status
+    - shows information (machine, processes, task-manager info  etc...)
 5. Start service
 6. Stop service
-7. exit
+
 
 # command options
 - Help:
@@ -45,6 +46,12 @@ pater
 - Version:
 ```bash
 pater --version
+```
+
+- Config:
+```bash
+pater --config
+# prints: info regarding this tool's config
 ```
 
 - Echo (test arg forwarding):

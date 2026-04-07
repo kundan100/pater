@@ -4,24 +4,43 @@ const config = require('#config');
 const { copyAll } = require(`#features/copy-local-changes/${config.SELECTED_APPROACH.COPY_LOCAL_CHANGES}`);
 const { killPort } = require('#features/killPorts/killPort');
 const { clearTempFiles } = require('#features/system/clearTempFiles');
+const { systemStatus } = require('#features/systemStatus/index');
 const { createRl } = require('#shared/askForUserEntry');
 const clog = require('#shared/clog-with-fallback');
 
-// actions are provided via `_helpers.menuHandlers` for clarity and testability
+// this array will hold the menu items that are enabled for the current run
+const enabledMenuItems = [];
 
+// actions are provided via `_helpers.menuHandlers` for clarity and testability
 const _helpers = {
+  setEnabledMenuItems: function () {
+    // clog.info('processMenuItems:');
+    // filter out disabled items and log the available menu items for debugging
+    menuItems.forEach((item, idx) => {
+      if (item.enabled) {
+        enabledMenuItems.push(item);
+      }
+    });
+    // clog.info('Enabled menu items:');
+    // enabledMenuItems.forEach((item, idx) => {
+    //   clog.log(`  ${idx + 1}. ${item.label}`);
+    // });
+  },
+
   printMenu: function () {
     clog.info('\nPlease choose an option:');
-    menuItems.forEach((it, idx) => {
+    enabledMenuItems.forEach((it, idx) => {
       const label = it && it.label ? it.label : String(it);
       clog.log(`  ${idx + 1}. ${label}`);
     });
+    clog.info('press x to exit;');
   },
 
   // ask prompts the user using the provided readline instance and resolver
   ask: function (rl, resolve) {
-    rl.question(`\nSelect an option (1-${menuItems.length}): `, (answer) => {
-      const n = Number(answer && answer.trim());
+    rl.question(`\nSelect an option (1-${enabledMenuItems.length}): `, (answer) => {
+      // const n = Number(answer && answer.trim());
+      const n = answer && answer.trim();
       return _helpers.processSelection(n, rl, resolve);
     });
   },
@@ -40,7 +59,7 @@ const _helpers = {
         process.stdin.removeListener('data', handler);
         // directly process the value
         const n = Number(line && line.trim());
-        if (Number.isInteger(n) && n >= 1 && n <= menuItems.length) {
+        if (Number.isInteger(n) && n >= 1 && n <= enabledMenuItems.length) {
           return _helpers.processSelection(n, rl, resolve);
         }
         // if invalid, fall back to interactive ask (may or may not work)
@@ -53,11 +72,35 @@ const _helpers = {
 
   // centralized selection processing to avoid duplication between ask and createOnData
   processSelection: function (n, rl, resolve) {
-    if (!Number.isInteger(n) || n < 1 || n > menuItems.length) {
+    // clog.log('n:', n, Number.isInteger(n));
+    // chars (x / m / b) are valid user entries that are not numbers, so handle those first
+    if (!Number.isInteger(n)) {
+      if (String(n).toLowerCase() === 'x') {
+        // x => exit
+        clog.log('Exiting per user request.');
+        rl.close();
+        return resolve();
+      }else if (String(n).toLowerCase() === 'm') {
+        // m => go back to main menu. to be implemented.
+        // clog.log('Returning to main menu per user request.');
+        // rl.close();
+        // return handleMenu().then(resolve);
+      } else if (String(n).toLowerCase() === 'b') {
+        // b => go back to previous menu. to be implemented.
+        // clog.log('Going back to previous menu per user request.');
+        // rl.close();
+        // return resolve(); // in a more complex menu system, this would trigger going back to the previous menu instead of exiting
+      }
+    }
+    // attempt to parse a number for menu selection; if it's not a valid integer in range, re-prompt
+    n = Number(n);
+    if (!Number.isInteger(n) || n < 1 || n > enabledMenuItems.length) {
+      // for any other invalid input, show a warning and re-prompt
       clog.warn('Invalid selection, please try again.');
       return _helpers.ask(rl, resolve);
     }
-    const item = menuItems[n - 1];
+    // valid number selection; find the corresponding menu item (accounting for 0-based index)
+    const item = enabledMenuItems[n - 1];
     const selectionLabel = item && item.label ? item.label : String(item);
     const invoke = () => {
       // dispatch by the menu item's `key` so ordering in menu.json can change
@@ -78,7 +121,10 @@ const _helpers = {
 
   // named handlers for each menu item; keyed by `menu.json` item `key`.
   menuHandlers: {
-    status: (item) => { clog.log(`\n[handler] ${item.label} - status: OK`); },
+    status: (item) => { 
+      clog.log(`\n[handler] ${item.label} - status: OK`);
+      systemStatus();
+    },
     start: (item) => { clog.info(`\n[handler] ${item.label} - starting...`); },
     stop: (item) => { clog.warn(`\n[handler] ${item.label} - stopping...`); },
     exit: (item) => { clog.log(`\n[handler] ${item.label} - exiting.`); },
@@ -122,6 +168,8 @@ const _helpers = {
 
 function handleMenu() {
   return new Promise((resolve) => {
+    //
+    _helpers.setEnabledMenuItems();
     // print the menu
     _helpers.printMenu();
 
@@ -163,4 +211,4 @@ function handleMenu() {
   });
 }
 
-module.exports = { handleMenu, menuItems };
+module.exports = { handleMenu };
