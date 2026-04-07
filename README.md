@@ -15,7 +15,7 @@
 3. done.
 
 
-# feature list
+# feature list:
 1. kill port
     - when propmted, enter port-number and hit ENTER key.
 2. System > Performance > Clear temp files
