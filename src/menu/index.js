@@ -4,6 +4,7 @@ const config = require('#config');
 const { copyAll } = require(`#features/copy-local-changes/${config.SELECTED_APPROACH.COPY_LOCAL_CHANGES}`);
 const { killPort } = require('#features/killPorts/killPort');
 const { clearTempFiles } = require('#features/system/clearTempFiles');
+const { systemStatus } = require('#features/systemStatus/index');
 const { createRl } = require('#shared/askForUserEntry');
 const clog = require('#shared/clog-with-fallback');
 
@@ -71,7 +72,7 @@ const _helpers = {
 
   // centralized selection processing to avoid duplication between ask and createOnData
   processSelection: function (n, rl, resolve) {
-    clog.log('n:', n, Number.isInteger(n));
+    // clog.log('n:', n, Number.isInteger(n));
     // chars (x / m / b) are valid user entries that are not numbers, so handle those first
     if (!Number.isInteger(n)) {
       if (String(n).toLowerCase() === 'x') {
@@ -120,7 +121,10 @@ const _helpers = {
 
   // named handlers for each menu item; keyed by `menu.json` item `key`.
   menuHandlers: {
-    status: (item) => { clog.log(`\n[handler] ${item.label} - status: OK`); },
+    status: (item) => { 
+      clog.log(`\n[handler] ${item.label} - status: OK`);
+      systemStatus();
+    },
     start: (item) => { clog.info(`\n[handler] ${item.label} - starting...`); },
     stop: (item) => { clog.warn(`\n[handler] ${item.label} - stopping...`); },
     exit: (item) => { clog.log(`\n[handler] ${item.label} - exiting.`); },
