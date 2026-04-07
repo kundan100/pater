@@ -1,7 +1,5 @@
 # pater
-
 **`personal assistant in terminal` for devs, for recurring workflows.**
-
 | ![Main Menu](./assets/cover/cover_image.jpg) |
 | -------------------------------------------- |
 
