@@ -7,15 +7,30 @@
  * Colors are automatically disabled when stdout is not a TTY or when NO_COLOR is set.
  *
  * KEY FEATURES:
- * - `log`, `info`, `warn`, `error` helpers for consistent message formatting
+ * - `log`, `info`, `warn`, `error`, `debug` helpers for consistent message formatting
+ * - `debug` output is enabled only when DEBUG_LOG_ENABLED is true in config
  * - automatic ANSI color wrapping when output is a TTY or FORCE_COLOR is enabled
  * - keyword-based color highlighting for common CLI message terms
  *
  * USAGE (from other modules):
  * const clog = require('#shared/clog-with-fallback');
  * clog.log('hello world');
+ * clog.debug('verbose information');
  * clog.error('something went wrong');
  */
+
+const _DEBUG_LOG_ENABLED = (() => {
+  try {
+    const _debugLogEnabled = Boolean(require('#config').DEBUG_LOG_ENABLED);
+    if (_debugLogEnabled) {
+      console.log('[./src/shared/clog.js] _DEBUG_LOG_ENABLED (set from config):', _debugLogEnabled);
+    }
+    return _debugLogEnabled;
+  } catch {
+    console.error('[./src/shared/clog.js] _DEBUG_LOG_ENABLED defaulting to false because config load failed');
+    return false;
+  }
+})();
 
 const ENABLED = (!!process.stdout.isTTY || !!process.env.FORCE_COLOR) && !process.env.NO_COLOR;
 
@@ -103,6 +118,10 @@ const clog = {
   info:  (...args) => console.log(fmt(C.cyan,    args)),
   warn:  (...args) => console.warn(fmt(C.yellow, args)),
   error: (...args) => console.error(fmt(C.red,   args)),
+  debug: (...args) => {
+    if (!_DEBUG_LOG_ENABLED) return;
+    console.debug(fmt(C.dim, args));
+  },
 };
 
 module.exports = clog;

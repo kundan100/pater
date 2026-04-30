@@ -7,6 +7,8 @@ const userConfig = {
   // ---------------------------------------------------------------------------
   // USER CONFIG — edit these to match your environment
   // ---------------------------------------------------------------------------
+  // for development only, keep it true.
+  DEBUG_LOG_ENABLED: false,
   // make it "true" to open config file when used arg "--config"
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: true,
   SELECTED_APPROACH__COPY_LOCAL_CHANGES: 'APPROACH_2',
@@ -22,6 +24,7 @@ const APPROACHES = {
 
 const config = {
   // ----- Setting REPO PATHS and other important items
+  DEBUG_LOG_ENABLED: userConfig.DEBUG_LOG_ENABLED,
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: userConfig.OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG,
   // ----- Setting APPROACH SELECTIONS
   SELECTED_APPROACH: {
