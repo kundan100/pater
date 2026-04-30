@@ -1,6 +1,7 @@
 /**
- * openFile.js - Cross-platform file opener with smart editor selection
- * 
+ * FILE: ./src/shared/openFile.js
+ * Cross-platform file opener with smart editor selection
+ *  
  * PURPOSE:
  * Provides a reusable, robust way to open files across platforms (Windows, macOS, Linux).
  * Handles platform-specific edge cases like Windows .js file associations and VS Code path resolution.
@@ -29,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const { askForUserEntry } = require('#shared/askForUserEntry');
+const clog = require('#shared/clog-with-fallback');
 
 // get path of vscode
 const localAppDataPath = process.env.LOCALAPPDATA || '';
@@ -58,10 +60,10 @@ const localVsCodePaths = {
 let isOpenFileActive = false;
 
 async function openFile(filePath, targetApp = '') {
-  console.log('cyk--10-1 > openFile', { filePath, targetApp, isOpenFileActive });
+  clog.log('[./src/shared/openFile.js] cyk--10-1 > openFile', { filePath, targetApp, isOpenFileActive });
 
   if (isOpenFileActive) {
-    console.log('File already opened.');
+    clog.log('[./src/shared/openFile.js] cyk--10-1 > File already opened.');
     return;
   }
 
@@ -89,7 +91,7 @@ async function openFile(filePath, targetApp = '') {
     } else if (normalized === 'notepad' || normalized === 'n') {
       selectedApp = 'notepad';
     } else {
-      console.log('Open cancelled. No editor was launched.');
+      clog.log('[./src/shared/openFile.js] cyk--10-1 > Open cancelled. No editor was launched.');
       return;
     }
   }
@@ -109,7 +111,7 @@ async function openFile(filePath, targetApp = '') {
       const _open = (await import('open')).default;
       child = await _open(filePath, { wait: false });
     } catch (err) {
-      console.log('cyk--10-1 > default open failed, falling back to xdg-open:', err);
+      clog.log('[./src/shared/openFile.js] cyk--10-1 > default open failed, falling back to xdg-open:', err);
       child = spawn('xdg-open', [filePath], {
         detached: true,
         stdio: 'ignore'
@@ -117,7 +119,7 @@ async function openFile(filePath, targetApp = '') {
     }
   }
 
-  console.log('cyk--10-1- opened file successfully:', filePath, child ? `(pid: ${child.pid})` : '(no child process)');
+  clog.log('[./src/shared/openFile.js] cyk--10-1 > opened file successfully:', filePath, child ? `(pid: ${child.pid})` : '(no child process)');
   isOpenFileActive = true;
 
   if (child && typeof child.on === 'function') {
@@ -141,10 +143,10 @@ async function openFile__OLD(filePath, targetApp) {
     // try {
     //     const open = (await import('open')).default;
     //     await open(filePath);
-    //     console.log("Opened file successfully:", filePath);
+    //     clog.log('[./src/shared/openFile.js] cyk--10-1 > Opened file successfully:', filePath);
     // } catch (err) {
     //     require('child_process').spawn('notepad', [filePath]);
-    //     console.log("Error opening file:", err);
+    //     clog.log('[./src/shared/openFile.js] cyk--10-1 > Error opening file:', err);
     // }
     // approach-3
     // try {

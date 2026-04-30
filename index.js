@@ -28,7 +28,7 @@ const args = process.argv.slice(2);
             process.exit(result.code || 0);
         }
     } catch (err) {
-        console.error('[./index.js] Fatal error:', err);
+        clog.error('[./index.js] Fatal error:', err);
         process.exit(1);
     }
 })();
