@@ -7,7 +7,8 @@ const userConfig = {
   // ---------------------------------------------------------------------------
   // USER CONFIG — edit these to match your environment
   // ---------------------------------------------------------------------------
-  OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: false,
+  // make it "true" to open config file when used arg "--config"
+  OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: true,
   SELECTED_APPROACH__COPY_LOCAL_CHANGES: 'APPROACH_2',
 };
 
@@ -26,6 +27,7 @@ const config = {
   SELECTED_APPROACH: {
     COPY_LOCAL_CHANGES: APPROACHES.COPY_LOCAL_CHANGES[userConfig.SELECTED_APPROACH__COPY_LOCAL_CHANGES],
   },
+  FEATURES_LIST: {}
   // ------ Derived paths based on root paths
   // get REPO1_PARENT_DIR() { return path.resolve(this.REPO1_ROOT, '..'); },
 };

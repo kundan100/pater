@@ -15,16 +15,21 @@ clog.log(`Welcome pater (v${pkg.version})!`);
 const args = process.argv.slice(2);
 
 // run the handler; it returns an object { handled: boolean, code?: number }
-const result = handleArgs(args) || { handled: false };
-
-if (!result.handled) {
-    // main owns the default action: show interactive menu
-    const { handleMenu } = require('#menu/index');
-    handleMenu()
-        .then(() => process.exit(0))
-        .catch(() => process.exit(1));
-} else {
-    // if handled, exit with the handler-provided code (or 0)
-    process.exit(result.code || 0);
-}
+(async () => {
+    try {
+        const result = (await handleArgs(args)) || { handled: false };
+        if (!result.handled) {
+            // main owns the default action: show interactive menu
+            const { handleMenu } = require('#menu/index');
+            await handleMenu();
+            process.exit(0);
+        } else {
+            // if handled, exit with the handler-provided code (or 0)
+            process.exit(result.code || 0);
+        }
+    } catch (err) {
+        console.error('[./index.js] Fatal error:', err);
+        process.exit(1);
+    }
+})();
 

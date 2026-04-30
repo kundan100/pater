@@ -1,13 +1,13 @@
 {
   "name": "@kundan100/pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "imports": {
-    "#config":     "./config.js",
-    "#shared/*":   "./src/shared/*.js",
+    "#config": "./config.js",
+    "#shared/*": "./src/shared/*.js",
     "#features/*": "./src/features/*.js",
-    "#menu/*":     "./src/menu/*.js",
-    "#args/*":     "./src/args/*.js"
+    "#menu/*": "./src/menu/*.js",
+    "#args/*": "./src/args/*.js"
   },
   "main": "index.js",
   "bin": {
@@ -25,7 +25,9 @@
     "publish:env-1-old-and-not-working": "dotenv -e .env -- npm publish --//registry.npmjs.org/:_authToken=$NPM_TOKEN",
     "postinstall": "pater --version"
   },
-  "dependencies": {},
+  "dependencies": {
+    "open": "^11.0.0"
+  },
   "devDependencies": {
     "dotenv-cli": "^11.0.0"
   },
