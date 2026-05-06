@@ -84,7 +84,7 @@ pater --verbose --echo hi
         - provide `repoRoot`
         - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
-    1. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally. `index.js` is the entry point for this project.
+    1. `index.js` is the entry point for this project. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
 5. done.
 
 ### <mark>Publish to npm</mark>
@@ -99,7 +99,7 @@ pater --verbose --echo hi
 3. Consume this newly created utility in file (`src\menu\index.js`)
 
 ### Code workflow
-1. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally. `index.js` is the entry point for this project.
+1. `index.js` is the entry point for this project. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
 2. 
 
 </details>
