@@ -99,7 +99,13 @@ pater --verbose --echo hi
 3. Consume this newly created utility in file (`src\menu\index.js`)
 
 ### Code workflow
-1. `index.js` is the entry point for this project. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
-2. 
+1. `index.js` is the entry point for this project.
+    a. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
+2. `.env` is loaded using npm `dotenv-cli`.
+    a. refer package.json script e.g. `"start": "dotenv -e .env -- node index.js",`
+3. `handleArgs` is called.
+    a. if args are passed then according to args it calls `printHelp`, `printVersion`, etc.
+    b. if args are not passed, it calls `handleMenu`.
+4. 
 
 </details>
