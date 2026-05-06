@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-function handleArgs(args) {
+async function handleArgs(args) {
   // parse flags
   const helpRequested = args.includes('-h') || args.includes('--help');
   const versionRequested = args.includes('--version') || args.includes('-v');
@@ -24,7 +24,7 @@ function handleArgs(args) {
     case appConfigDetailsRequested: {
       // delegate app config details printing to dedicated module
       const { appConfig } = require('./appConfig/appConfig');
-      appConfig();
+      await appConfig();
       return { handled: true, code: 0 };
     }
     case echoRequested: {
