@@ -100,12 +100,12 @@ pater --verbose --echo hi
 
 ### Code workflow
 1. `index.js` is the entry point for this project.
-    a. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
+    1. run command `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally.
 2. `.env` is loaded using npm `dotenv-cli`.
-    a. refer package.json script e.g. `"start": "dotenv -e .env -- node index.js",`
+    1. refer package.json script e.g. `"start": "dotenv -e .env -- node index.js",`
 3. `handleArgs` is called.
-    a. if args are passed then according to args it calls `printHelp`, `printVersion`, etc.
-    b. if args are not passed, it calls `handleMenu`.
+    1. if args are passed then according to args it calls `printHelp`, `printVersion`, etc.
+    2. if args are not passed, it calls `handleMenu`.
 4. 
 
 </details>
