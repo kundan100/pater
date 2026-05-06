@@ -20,6 +20,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish:env": "dotenv -e .env -- npm publish --registry=https://registry.npmjs.org/",
     "publish:env-1-old-and-not-working": "dotenv -e .env -- npm publish --//registry.npmjs.org/:_authToken=$NPM_TOKEN",

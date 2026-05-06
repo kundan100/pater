@@ -82,7 +82,7 @@ pater --verbose --echo hi
         - provide `repoRoot`
         - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
-    1. run caommand `node index.js`, from project root.
+    1. run caommand `node index.js` or `npm start` (from project root) to run this project locally. `index.js` is the entry point for this project.
 5. done.
 
 ### <mark>Publish to npm</mark>
@@ -95,5 +95,9 @@ pater --verbose --echo hi
 1. Add a menu-option in file (`src\menu\menu.json`).
 2. Create a utility (e.g. `src\features\system\clearTempFiles.js`)
 3. Consume this newly created utility in file (`src\menu\index.js`)
+
+### Code workflow
+1. run caommand `node index.js` or `npm start` (from project root) to run this project locally. `index.js` is the entry point for this project.
+2. 
 
 </details>

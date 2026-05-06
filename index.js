@@ -24,7 +24,7 @@ const args = process.argv.slice(2);
             await handleMenu();
             process.exit(0);
         } else {
-            // if handled, exit with the handler-provided code (or 0)
+            // if handled (e.g. args like --help), exit with the handler-provided code (or 0)
             process.exit(result.code || 0);
         }
     } catch (err) {
