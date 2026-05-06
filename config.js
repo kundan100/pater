@@ -7,7 +7,7 @@ const userConfig = {
   // ---------------------------------------------------------------------------
   // USER CONFIG — edit these to match your environment
   // ---------------------------------------------------------------------------
-  // for development only, keep it true.
+  // Set to "true" to enable debug logs (e.g. from clog.debug) in development environment. Does not affect production environment.
   DEBUG_LOG_ENABLED: false,
   // make it "true" to open config file when used arg "--config"
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: true,
@@ -24,7 +24,7 @@ const APPROACHES = {
 
 const config = {
   // ----- Setting REPO PATHS and other important items
-  DEBUG_LOG_ENABLED: userConfig.DEBUG_LOG_ENABLED,
+  DEBUG_LOG_ENABLED: process.env.NODE_ENV === 'development' ? userConfig.DEBUG_LOG_ENABLED : false,
   OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG: userConfig.OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG,
   // ----- Setting APPROACH SELECTIONS
   SELECTED_APPROACH: {

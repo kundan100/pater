@@ -72,7 +72,9 @@ pater --verbose --echo hi
 ### Project setup for local dev
 1. clone the repo.
 2. create a file (.env for local use only) in project root.
-    1. add this line `NPM_TOKEN=your-npm-token-for-publishing`
+    1. add these lines 
+    `NPM_TOKEN=your-npm-token-for-publishing`
+    `NODE_ENV=development`
 3. Configuration before running (follow sample)
     1. app level configuration
         - update `.\config.js`
@@ -82,7 +84,7 @@ pater --verbose --echo hi
         - provide `repoRoot`
         - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
-    1. run caommand `node index.js` or `npm start` (from project root) to run this project locally. `index.js` is the entry point for this project.
+    1. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally. `index.js` is the entry point for this project.
 5. done.
 
 ### <mark>Publish to npm</mark>
@@ -97,7 +99,7 @@ pater --verbose --echo hi
 3. Consume this newly created utility in file (`src\menu\index.js`)
 
 ### Code workflow
-1. run caommand `node index.js` or `npm start` (from project root) to run this project locally. `index.js` is the entry point for this project.
+1. run caommand `npm start` or `dotenv -e .env -- node index.js` (from project root) to run this project locally. `index.js` is the entry point for this project.
 2. 
 
 </details>
