@@ -20,6 +20,7 @@ createShadowOfAllConfigFiles();
 
 // capture CLI arguments (excluding `node` and script path)
 const args = process.argv.slice(2);
+clog.debug('[/index.js] args:', args);
 
 // run the handler; it returns an object { handled: boolean, code?: number }
 (async () => {
