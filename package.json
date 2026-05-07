@@ -3,6 +3,7 @@
   "description": "personal assistant in terminal for devs, for recurring workflows.",
   "version": "1.4.4",
   "imports": {
+    "#root/*": "./*",
     "#config": "./config.js",
     "#shared/*": "./src/shared/*.js",
     "#features/*": "./src/features/*.js",
