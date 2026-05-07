@@ -19,9 +19,17 @@
  * clog.error('something went wrong');
  */
 
+// const appConfigJson = require(`#root/config.json`);
+const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
+const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
+// console.log('[./src/shared/clog.js] Loaded appConfigJson:', appConfigJson);
+
+// Determine if debug logs should be enabled based on appConfigJson, with a fallback to false (if fails to load).
 const _DEBUG_LOG_ENABLED = (() => {
   try {
-    const _debugLogEnabled = Boolean(require('#config').DEBUG_LOG_ENABLED);
+    let _debugLogEnabled = Boolean(appConfigJson.data.DEBUG_LOG_ENABLED);
+    _debugLogEnabled = process.env.NODE_ENV === 'development' ? _debugLogEnabled : false;
+    //
     if (_debugLogEnabled) {
       console.log('[./src/shared/clog.js] _DEBUG_LOG_ENABLED (set from config):', _debugLogEnabled);
     }

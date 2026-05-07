@@ -2,7 +2,10 @@ const configManagerJson = require('./configManager.json');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const clog = require('#shared/clog-with-fallback');
+
+// do not use clog in this file as this file itself is being used in clog, which can cause circular dependency issues. Use console for logging in this file if needed.
+// const clog = require('#shared/clog-with-fallback');
+const _DEBUG_LOG_ENABLED = false; // set to true to enable debug logs in this file
 
 // helpers
 const _helpers = {
@@ -14,19 +17,19 @@ const _helpers = {
 
 function createShadowOfAllConfigFiles() {
     // The actual config manager code will be implemented in this file later.
-    clog.debug("createShadowOfAllConfigFiles...");
-    clog.debug(" - userHomePath:", _helpers.userHomePath); // C:\Users\<user-name>
-    clog.debug(" - path for project root (not the current directory):", _helpers.projectRoot); // D:\kk\kk_c_t\__kk100github\pater
-    clog.debug(" - local shadow of project root:", _helpers.localShadowOfProjectRoot); // C:\Users\<user-name>\__cyk\@kundan100\pater
-    clog.debug("configManagerJson.length: ", configManagerJson.length);
+    _DEBUG_LOG_ENABLED && console.debug("createShadowOfAllConfigFiles...");
+    _DEBUG_LOG_ENABLED && console.debug(" - userHomePath:", _helpers.userHomePath); // C:\Users\<user-name>
+    _DEBUG_LOG_ENABLED && console.debug(" - path for project root (not the current directory):", _helpers.projectRoot); // D:\kk\kk_c_t\__kk100github\pater
+    _DEBUG_LOG_ENABLED && console.debug(" - local shadow of project root:", _helpers.localShadowOfProjectRoot); // C:\Users\<user-name>\__cyk\@kundan100\pater
+    _DEBUG_LOG_ENABLED && console.debug("configManagerJson.length: ", configManagerJson.length);
     for (const configItem of configManagerJson) {
-        clog.debug(` - Config File Path (in json): ${configItem.filePath}, Config ID: ${configItem.id}`); // - Config File Path (in json): /config.json, Config ID: appConfig
+        _DEBUG_LOG_ENABLED && console.debug(` - Config File Path (in json): ${configItem.filePath}, Config ID: ${configItem.id}`); // - Config File Path (in json): /config.json, Config ID: appConfig
         // source file
         const sourceFilePath = path.resolve(path.join(_helpers.projectRoot, configItem.filePath));
-        clog.debug(` - sourceFilePath: ${sourceFilePath}`); // - sourceFilePath: D:\kk\kk_c_t\__kk100github\pater\config.json
+        _DEBUG_LOG_ENABLED && console.debug(` - sourceFilePath: ${sourceFilePath}`); // - sourceFilePath: D:\kk\kk_c_t\__kk100github\pater\config.json
         // ensure source file exists
         if (!fs.existsSync(sourceFilePath)) {
-            clog.warn(`Source file not found for config ID "${configItem.id}" at path: ${sourceFilePath}. Skipping this config item.`);
+            _DEBUG_LOG_ENABLED && console.warn(`Source file not found for config ID "${configItem.id}" at path: ${sourceFilePath}. Skipping this config item.`);
             continue; // skip to the next config item
         }
         // destination file
@@ -36,18 +39,55 @@ function createShadowOfAllConfigFiles() {
             path.dirname(destinationFilePath),
             { recursive: true }
         );
-        clog.debug(` - destinationFilePath: ${destinationFilePath} --- exists or created (if not existed)`); // - destinationFilePath: C:\Users\<user-name>\__cyk\@kundan100\pater\config.json --- exists or created (if not existed)
+        _DEBUG_LOG_ENABLED && console.debug(` - destinationFilePath: ${destinationFilePath} --- exists or created (if not existed)`); // - destinationFilePath: C:\Users\<user-name>\__cyk\@kundan100\pater\config.json --- exists or created (if not existed)
         // Skip copying if file already exists
         if (fs.existsSync(destinationFilePath)) {
-            clog.debug(
+            _DEBUG_LOG_ENABLED && console.debug(
                 `Shadow file already exists for config ID "${configItem.id}". Skipping copy: ${destinationFilePath}`
             );
             continue;
         }
         // Copy file
         fs.copyFileSync(sourceFilePath, destinationFilePath);
-        clog.log(`Copied config file for config ID "${configItem.id}" to local shadow: ${destinationFilePath}`); // Copied config file for config ID "appConfig" to local shadow: C:\Users\<user-name>\__cyk\@kundan100\pater\config.json
+        _DEBUG_LOG_ENABLED && console.log(`Copied config file for config ID "${configItem.id}" to local shadow: ${destinationFilePath}`); // Copied config file for config ID "appConfig" to local shadow: C:\Users\<user-name>\__cyk\@kundan100\pater\config.json
     }
 }
 
-module.exports = { createShadowOfAllConfigFiles };
+function loadConfigJsonWithSynchedShadow(filePath) {
+    //
+    _DEBUG_LOG_ENABLED && console.debug('loadConfigJsonWithSynchedShadow...');
+    // print file-path received as-is ('#root/config.json')
+    _DEBUG_LOG_ENABLED && console.debug(` - Received filePath: ${filePath}`);
+    // print the resolved absolute path
+    const resolvedPath = require.resolve(filePath);
+    _DEBUG_LOG_ENABLED && console.debug(` - Resolved absolute path: ${resolvedPath}`);
+    // print relative-path from project root
+    const relativePathFromProjectRoot = path.relative(_helpers.projectRoot, resolvedPath);
+    _DEBUG_LOG_ENABLED && console.debug(` - Relative path from project root: ${relativePathFromProjectRoot}`);
+    // construct shadow path
+    const shadowPath = path.join(_helpers.localShadowOfProjectRoot, relativePathFromProjectRoot);
+    _DEBUG_LOG_ENABLED && console.debug(` - Constructed shadow path: ${shadowPath}`);
+    // load both the original and shadow config files and merge them (with shadow taking precedence).
+    let originalFile = {};
+    let shadowFile = {};
+    // load original file
+    if (fs.existsSync(resolvedPath)) {
+        originalFile = require(resolvedPath);
+        _DEBUG_LOG_ENABLED && console.debug(` - Loaded original config file from: ${resolvedPath}`);
+    } else {
+        _DEBUG_LOG_ENABLED && console.warn(`Original config file not found at: ${resolvedPath}`);
+    }
+    // load shadow file
+    if (fs.existsSync(shadowPath)) {
+        shadowFile = require(shadowPath);
+        _DEBUG_LOG_ENABLED && console.debug(` - Loaded shadow config file from: ${shadowPath}`);
+    } else {
+        _DEBUG_LOG_ENABLED && console.warn(`Shadow config file not found at: ${shadowPath}`);
+    }
+    // merge with shadow taking precedence
+    const mergedFile = { ...originalFile, ...shadowFile };
+    _DEBUG_LOG_ENABLED && console.debug(` - Merged file (shadow takes precedence over original):`, mergedFile);
+    return mergedFile;
+}
+
+module.exports = { createShadowOfAllConfigFiles, loadConfigJsonWithSynchedShadow };

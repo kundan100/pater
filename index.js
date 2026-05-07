@@ -25,6 +25,7 @@ const args = process.argv.slice(2);
 (async () => {
     try {
         const result = (await handleArgs(args)) || { handled: false };
+        clog.debug('[/index.js] Result from handleArgs:', result);
         if (!result.handled) {
             // main owns the default action: show interactive menu
             const { handleMenu } = require('#menu/index');
@@ -35,7 +36,7 @@ const args = process.argv.slice(2);
             process.exit(result.code || 0);
         }
     } catch (err) {
-        clog.error('[./index.js] Fatal error:', err);
+        clog.error('[/index.js] Fatal error:', err);
         process.exit(1);
     }
 })();

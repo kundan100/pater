@@ -4,7 +4,6 @@
   "version": "1.4.4",
   "imports": {
     "#root/*": "./*",
-    "#config": "./config.js",
     "#shared/*": "./src/shared/*.js",
     "#features/*": "./src/features/*.js",
     "#menu/*": "./src/menu/*.js",
@@ -17,6 +16,7 @@
   "files": [
     "src",
     "config.js",
+    "config.json",
     "assets"
   ],
   "license": "MIT",

@@ -6,6 +6,6 @@
     },
     {
         "id": "appConfig",
-        "filePath": "/config.js"
+        "filePath": "/config.json"
     }
 ]

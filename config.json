@@ -1,0 +1,31 @@
+{
+    "filePath": "/config.json",
+    "id": "appConfig",
+    "data": {
+        "DEBUG_LOG_ENABLED__note": "Set to true to enable debug logs (e.g. from clog.debug) in development environment. Does not affect production environment.",
+        "DEBUG_LOG_ENABLED": false,
+        "OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG__note": "Make it true to open config file when used arg --config",
+        "OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG": true,
+        "SELECTED_APPROACH__note": "Specify the approach to be selected",
+        "SELECTED_APPROACH": {
+            "COPY_LOCAL_CHANGES": "approach-2-keep-files-with-local-changes-beside-original-src-file/copyLocalChanges",
+            "approaches": [
+                "approach-1-keep-files-with-local-changes-inside-utility/copyLocalChanges",
+                "approach-2-keep-files-with-local-changes-beside-original-src-file/copyLocalChanges"
+            ]
+        },
+        "FEATURES_LIST__note": "List of features in the tool.",
+        "FEATURES_LIST": [
+            {
+                "id": "killPorts",
+                "description": "Kill processes running on specified ports.",
+                "enabled": true
+            },
+            {
+                "id": "systemStatus",
+                "description": "Check the status of the system.",
+                "enabled": true
+            }
+        ]
+    }
+}
