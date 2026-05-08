@@ -16,9 +16,7 @@ const path = require('path');
 
 const manifest = require('../local-changes-manifest.json');
 
-const config  = require('#config');
 const clog = require('#shared/clog-with-fallback');
-
 
 const CYK_PREFIX = 'cykLocal__';
 
