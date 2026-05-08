@@ -1,6 +1,8 @@
 #!/usr/bin/env node
+const clog = require('#shared/clog-with-fallback');
 
 async function handleArgs(args) {
+  clog.debug('[/src/args/handleArgs.js] Received args:', args);
   // parse flags
   const helpRequested = args.includes('-h') || args.includes('--help');
   const versionRequested = args.includes('--version') || args.includes('-v');
