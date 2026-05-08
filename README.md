@@ -24,7 +24,7 @@
     - use case: keep local changes in a local companion file and apply these changes in actual source file when needed.
     - In your repo, make a copy of any source file and rename that by adding a prefix `cykLocal__`.
     - You can gitignore/exclude this file from showing up in git-changes section.
-    - update `.\config.js` and `.\src\features\copy-local-changes\local-changes-manifest.json` as explained in section `Project setup for local dev`
+    - update `/config.js` and `/src/features/copy-local-changes/local-changes-manifest.json` as explained in section `Project setup for local dev`
 4. Show status
     - shows information (machine, processes, task-manager info  etc...)
 5. Start service
@@ -75,13 +75,15 @@ pater --verbose --echo hi
     1. add these lines 
     `NPM_TOKEN=your-npm-token-for-publishing`
     `NODE_ENV=development`
-    2. For `DEBUG_LOG_ENABLED` to work, we need `.env` to exist having code for `NODE_ENV`.
+    2. For `DEBUG_LOG_ENABLED` to work properly, we need `.env` to exist having code for `NODE_ENV`.
 3. Configuration before running (follow sample)
     1. app level configuration
-        - update `.\config.js`
+        - update `/config.js`
         - OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG
-    2. feature level configuration
-        - update `.\src\features\copy-local-changes\local-changes-manifest.json`
+    2. configuration for shadowing file at local machine
+        - update file `/src/features/configManager/configManager.json`
+    3. feature level configuration
+        - update `/src/features/copy-local-changes/local-changes-manifest.json`
         - provide `repoRoot`
         - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
@@ -95,9 +97,9 @@ pater --verbose --echo hi
     2. run command (`npm run publish:env`)
 
 ### How to add new feature in this utility
-1. Add a menu-option in file (`src\menu\menu.json`).
-2. Create a utility (e.g. `src\features\system\clearTempFiles.js`)
-3. Consume this newly created utility in file (`src\menu\index.js`)
+1. Add a menu-option in file (`src/menu/menu.json`).
+2. Create a utility (e.g. `src/features/system/clearTempFiles.js`)
+3. Consume this newly created utility in file (`src/menu/index.js`)
 
 ### Code workflow
 1. `index.js` is the entry point for this project.
@@ -111,5 +113,10 @@ pater --verbose --echo hi
     2. if args are not passed, it calls `handleMenu`.
 4. On first install, manage config files as shadow into local machine
 5. 
+
+
+### Code flow diagram
+**create a code flow diagram for devs to understand the whole codebase and connections between different files**
+
 
 </details>
