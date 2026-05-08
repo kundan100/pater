@@ -4,7 +4,6 @@
 // this is to show color outputs in terminal
 process.env.FORCE_COLOR = process.env.FORCE_COLOR || '1';
 
-// const { loadLocalAppConfigShadow } = require('#args/appConfig/appConfig');
 const { createShadowOfAllConfigFiles } = require('#features/configManager/configManager');
 const handleArgs = require('#args/handleArgs');
 const pkg = require('./package.json');
@@ -13,9 +12,8 @@ const clog = require('#shared/clog-with-fallback');
 // startup banner — shown every time the CLI is invoked
 clog.log(`Welcome pater (v${pkg.version})!`);
 
-// create a local shadow of the app config in the user's home directory (e.g. c:/users/<user-name>/__cyk/.pater/config.js)
+// create a local shadow of the app config in the user's home directory (e.g. c:/users/<user-name>/__cyk/@kundan100/pater/config.js)
 // this is where tool's config is shadowed as backup and will be loaded on each run of the tool, so that any changes to the config file are reflected without needing to restart the CLI
-// loadLocalAppConfigShadow();
 createShadowOfAllConfigFiles();
 
 // capture CLI arguments (excluding `node` and script path)
