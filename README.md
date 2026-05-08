@@ -114,6 +114,20 @@ pater --verbose --echo hi
 4. On first install, manage config files as shadow into local machine
 5. 
 
+### Best practices followed
+1. In file `package.json`, define `internal import aliases`.
+    1. It solves the classic "relative path hell".
+    2. consume it like `const pkg = require('#root/package.json');` from any part of the code.
+```
+"imports": {
+    "#root/*": "./*",
+    "#shared/*": "./src/shared/*.js",
+    "#features/*": "./src/features/*.js",
+    "#menu/*": "./src/menu/*.js",
+    "#args/*": "./src/args/*.js"
+},
+```
+2. 
 
 ### Code flow diagram
 **create a code flow diagram for devs to understand the whole codebase and connections between different files**
