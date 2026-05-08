@@ -7,5 +7,9 @@
     {
         "id": "appConfig",
         "filePath": "/config.json"
+    },
+    {
+        "id": "menuConfig",
+        "filePath": "/src/menu/menu.json"
     }
 ]

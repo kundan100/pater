@@ -87,6 +87,20 @@ function loadConfigJsonWithSynchedShadow(filePath) {
     // merge with shadow taking precedence
     const mergedFile = { ...originalFile, ...shadowFile };
     _DEBUG_LOG_ENABLED && console.debug(` - Merged file (shadow takes precedence over original):`, mergedFile);
+    // update shadow file if there are any differences (to keep them synched)
+    // below code works but needs to be tested more before enabling it, so commenting it out for now. The idea is to keep the shadow file synched with the original file (with shadow taking precedence in case of differences), so that user can edit either the original file or the shadow file and the changes will be reflected in both places when this function is called.
+    // if (JSON.stringify(originalFile) !== JSON.stringify(shadowFile)) {
+    //     // before overwriting the shadow file with merged file content, 
+    //     // create a backup of the existing shadow file (if exists) with a timestamp in the name,
+    //     // so that user can refer back to it if needed.
+    //     if (fs.existsSync(shadowPath)) {
+    //         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    //         fs.copyFileSync(shadowPath, `${shadowPath}.${timestamp}`);
+    //     }
+    //     // now write the merged content to the shadow file, 
+    //     // so that it is synched with the original file (with shadow taking precedence in case of differences).
+    //     fs.writeFileSync(shadowPath, JSON.stringify(mergedFile, null, 2), 'utf-8');
+    // }
     return mergedFile;
 }
 
