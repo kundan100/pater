@@ -61,7 +61,8 @@ function loadConfigJsonWithSynchedShadow(filePath) {
     // print file-path received as-is ('#root/config.json')
     _DEBUG_LOG_ENABLED && console.debug(` - Received filePath: ${filePath}`);
     // print the resolved absolute path
-    const resolvedPath = require.resolve(filePath);
+    // if caller already passed an absolute path (e.g. via require.resolve at callsite), use it directly
+    const resolvedPath = path.isAbsolute(filePath) ? filePath : require.resolve(filePath);
     _DEBUG_LOG_ENABLED && console.debug(` - Resolved absolute path: ${resolvedPath}`);
     // print relative-path from project root
     const relativePathFromProjectRoot = path.relative(_helpers.projectRoot, resolvedPath);

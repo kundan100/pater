@@ -1,7 +1,6 @@
-const menuConfigJson = require('./menuConfig.json');
-
 const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
-const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
+const appConfigJson = loadConfigJsonWithSynchedShadow(require.resolve('#root/config.json'));
+const menuConfigJson = loadConfigJsonWithSynchedShadow(require.resolve('./menuConfig.json'));
 const { copyAll } = require(`#features/copyLocalChanges/${appConfigJson.data.SELECTED_APPROACH.COPY_LOCAL_CHANGES}`);
 const { killPort } = require('#features/killPorts/killPort');
 const { clearTempFiles } = require('#features/system/clearTempFiles');
