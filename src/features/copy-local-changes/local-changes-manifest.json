@@ -1,19 +1,23 @@
-[
-    {
-        "repo": "REPO1_ROOT",
-        "repoRoot": "D:\\kk\\zeb_codes\\phoenix-services",
-        "files": [
-            "ui\\package.json",
-            "ui\\.husky\\pre-commit",
-            "ui\\base.webpack.config.js",
-            "ui\\shared\\components\\src\\state\\auth\\context.tsx"
-        ]
-    },
-    {
-        "repo": "REPO2_ROOT",
-        "repoRoot": "D:\\kk\\zeb_codes\\zds-react",
-        "files": [
-            "package.json"
-        ]
-    }
-]
+{
+    "filePath": "/src/features/copy-local-changes/local-changes-manifest.json",
+    "id": "copyLocalChangesConfig",
+    "data": [
+        {
+            "repo": "REPO1_ROOT",
+            "repoRoot": "D:\\kk\\zeb_codes\\phoenix-services",
+            "files": [
+                "ui\\package.json",
+                "ui\\.husky\\pre-commit",
+                "ui\\base.webpack.config.js",
+                "ui\\shared\\components\\src\\state\\auth\\context.tsx"
+            ]
+        },
+        {
+            "repo": "REPO2_ROOT",
+            "repoRoot": "D:\\kk\\zeb_codes\\zds-react",
+            "files": [
+                "package.json"
+            ]
+        }
+    ]
+}

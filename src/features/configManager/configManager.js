@@ -7,6 +7,8 @@ const os = require('os');
 // const clog = require('#shared/clog-with-fallback');
 const _DEBUG_LOG_ENABLED = false; // set to true to enable debug logs in this file
 
+const configManagerData = Array.isArray(configManagerJson.data) ? configManagerJson.data : [];
+
 // helpers
 const _helpers = {
     // path for user-machine e.g. c:/users/<user-name>/
@@ -21,8 +23,8 @@ function createShadowOfAllConfigFiles() {
     _DEBUG_LOG_ENABLED && console.debug(" - userHomePath:", _helpers.userHomePath); // C:\Users\<user-name>
     _DEBUG_LOG_ENABLED && console.debug(" - path for project root (not the current directory):", _helpers.projectRoot); // D:\kk\kk_c_t\__kk100github\pater
     _DEBUG_LOG_ENABLED && console.debug(" - local shadow of project root:", _helpers.localShadowOfProjectRoot); // C:\Users\<user-name>\__cyk\@kundan100\pater
-    _DEBUG_LOG_ENABLED && console.debug("configManagerJson.length: ", configManagerJson.length);
-    for (const configItem of configManagerJson) {
+    _DEBUG_LOG_ENABLED && console.debug("configManagerData.length: ", configManagerData.length);
+    for (const configItem of configManagerData) {
         _DEBUG_LOG_ENABLED && console.debug(` - Config File Path (in json): ${configItem.filePath}, Config ID: ${configItem.id}`); // - Config File Path (in json): /config.json, Config ID: appConfig
         // source file
         const sourceFilePath = path.resolve(path.join(_helpers.projectRoot, configItem.filePath));

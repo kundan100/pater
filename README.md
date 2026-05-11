@@ -97,7 +97,7 @@ pater --verbose --echo hi
     2. run command (`npm run publish:env`)
 
 ### How to add new feature in this utility
-1. Add a menu-option in file (`src/menu/menu.json`).
+1. Add a menu-option in file (`src/menu/menuConfig.json`).
 2. Create a utility (e.g. `src/features/system/clearTempFiles.js`)
 3. Consume this newly created utility in file (`src/menu/index.js`)
 
