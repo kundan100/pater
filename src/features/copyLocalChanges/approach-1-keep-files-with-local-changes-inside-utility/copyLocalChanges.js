@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const localChangesConfigJson = require('../copyLocalChangesConfig.json');
+const copyLocalChangesConfigJson = require('../copyLocalChangesConfig.json');
 
-const localChangesConfigData = Array.isArray(localChangesConfigJson.data) ? localChangesConfigJson.data : [];
+const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
 function log(...args) {
   console.log('[copyLocalChanges]', ...args);
@@ -11,7 +11,7 @@ function log(...args) {
 
 function copyAll({ dryRun = false, verbose = false } = {}) {
   // loop through copyLocalChangesConfig entries
-  for (const entry of localChangesConfigData) {
+  for (const entry of copyLocalChangesConfigData) {
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
       throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);
