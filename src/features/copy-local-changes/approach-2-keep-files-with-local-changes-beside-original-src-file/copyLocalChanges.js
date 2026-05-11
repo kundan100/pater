@@ -14,14 +14,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const manifest = require('../local-changes-manifest.json');
+const localChangesManifestJson = require('../local-changes-manifest.json');
+const localChangesManifestData = Array.isArray(localChangesManifestJson.data) ? localChangesManifestJson.data : [];
 
 const clog = require('#shared/clog-with-fallback');
 
 const CYK_PREFIX = 'cykLocal__';
 
 function copyAll({ dryRun = false, verbose = false } = {}) {
-  for (const entry of manifest) {
+  for (const entry of localChangesManifestData) {
     // get repoRoot from the manifest for more flexibility and less coupling with config.js
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {

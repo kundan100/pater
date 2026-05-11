@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const manifest = require('../local-changes-manifest.json');
+const localChangesManifestJson = require('../local-changes-manifest.json');
+
+const localChangesManifestData = Array.isArray(localChangesManifestJson.data) ? localChangesManifestJson.data : [];
 
 function log(...args) {
   console.log('[copyLocalChanges]', ...args);
@@ -9,7 +11,7 @@ function log(...args) {
 
 function copyAll({ dryRun = false, verbose = false } = {}) {
   // loop through manifest entries
-  for (const entry of manifest) {
+  for (const entry of localChangesManifestData) {
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
       throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);

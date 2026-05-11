@@ -1,4 +1,4 @@
-const menuItems = require('./menu.json');
+const menuConfigJson = require('./menuConfig.json');
 
 const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
 const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
@@ -8,7 +8,9 @@ const { clearTempFiles } = require('#features/system/clearTempFiles');
 const { systemStatus } = require('#features/systemStatus/index');
 const { createRl } = require('#shared/askForUserEntry');
 const clog = require('#shared/clog-with-fallback');
+const { runExternalAction } = require('./externalActionRunner');
 
+const menuItems = Array.isArray(menuConfigJson.data) ? menuConfigJson.data : [];
 // this array will hold the menu items that are enabled for the current run
 const enabledMenuItems = [];
 
@@ -103,10 +105,19 @@ const _helpers = {
     // valid number selection; find the corresponding menu item (accounting for 0-based index)
     const item = enabledMenuItems[n - 1];
     const selectionLabel = item && item.label ? item.label : String(item);
-    const invoke = () => {
-      // dispatch by the menu item's `key` so ordering in menu.json can change
+    const invoke = async () => {
+      // dispatch by the menu item's `key` so ordering in menuConfig.json can change
       const key = item && item.key ? item.key : null;
       clog.info(`\nYou selected: ${selectionLabel} (key: ${key})`);
+      // first try to run an external action (local machine scope) if defined for this item
+      try {
+        const handled = await runExternalAction(item, rl);
+        if (handled) return; // if not handled by externalActionRunner, continue to internal handlers
+      } catch(e) {
+        clog.error(`Error running external action for item '${selectionLabel}':`, e && e.message ? e.message : e);
+        return;
+      }
+      // internal handlers (project scope)
       if (key && typeof _helpers.menuHandlers[key] === 'function') {
         return _helpers.menuHandlers[key](item, rl);
       }
@@ -120,7 +131,7 @@ const _helpers = {
     });
   },
 
-  // named handlers for each menu item; keyed by `menu.json` item `key`.
+  // named handlers for each menu item; keyed by `menuConfig.json` item `key`.
   menuHandlers: {
     status: (item) => { 
       clog.log(`\n[handler] ${item.label} - status: OK`);
