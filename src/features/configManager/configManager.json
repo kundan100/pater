@@ -10,6 +10,6 @@
     },
     {
         "id": "menuConfig",
-        "filePath": "/src/menu/menu.json"
+        "filePath": "/src/menu/menuConfig.json"
     }
 ]

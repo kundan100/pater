@@ -1,4 +1,4 @@
-const menuItems = require('./menu.json');
+const menuConfigJson = require('./menuConfig.json');
 
 const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
 const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
@@ -10,6 +10,7 @@ const { createRl } = require('#shared/askForUserEntry');
 const clog = require('#shared/clog-with-fallback');
 const { runExternalAction } = require('./externalActionRunner');
 
+const menuItems = Array.isArray(menuConfigJson.data) ? menuConfigJson.data : [];
 // this array will hold the menu items that are enabled for the current run
 const enabledMenuItems = [];
 
@@ -105,7 +106,7 @@ const _helpers = {
     const item = enabledMenuItems[n - 1];
     const selectionLabel = item && item.label ? item.label : String(item);
     const invoke = async () => {
-      // dispatch by the menu item's `key` so ordering in menu.json can change
+      // dispatch by the menu item's `key` so ordering in menuConfig.json can change
       const key = item && item.key ? item.key : null;
       clog.info(`\nYou selected: ${selectionLabel} (key: ${key})`);
       // first try to run an external action (local machine scope) if defined for this item
@@ -130,7 +131,7 @@ const _helpers = {
     });
   },
 
-  // named handlers for each menu item; keyed by `menu.json` item `key`.
+  // named handlers for each menu item; keyed by `menuConfig.json` item `key`.
   menuHandlers: {
     status: (item) => { 
       clog.log(`\n[handler] ${item.label} - status: OK`);
