@@ -1,4 +1,4 @@
-const configManagerJson = require('./configManager.json');
+const shadowManagerJson = require('./shadowManager.json');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -7,13 +7,13 @@ const os = require('os');
 // const clog = require('#shared/clog-with-fallback');
 const _DEBUG_LOG_ENABLED = false; // set to true to enable debug logs in this file
 
-// const configManagerData = Array.isArray(configManagerJson.data) ? configManagerJson.data : [];
-const configManagerData = configManagerJson.data || {};
-const filesToBeShadowed = Array.isArray(configManagerData.filesToBeShadowed)
-    ? configManagerData.filesToBeShadowed
+// const shadowManagerData = Array.isArray(shadowManagerJson.data) ? shadowManagerJson.data : [];
+const shadowManagerData = shadowManagerJson.data || {};
+const filesToBeShadowed = Array.isArray(shadowManagerData.filesToBeShadowed)
+    ? shadowManagerData.filesToBeShadowed
     : [];
-const shadowFolderUnderUserHome = typeof configManagerData.shadowFolderUnderUserHome === 'string' && configManagerData.shadowFolderUnderUserHome.length
-    ? configManagerData.shadowFolderUnderUserHome
+const shadowFolderUnderUserHome = typeof shadowManagerData.shadowFolderUnderUserHome === 'string' && shadowManagerData.shadowFolderUnderUserHome.length
+    ? shadowManagerData.shadowFolderUnderUserHome
     : '__cyk';
 
 // helpers

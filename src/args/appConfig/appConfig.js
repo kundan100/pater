@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // appConfig helper — encapsulates logic for printing app's config file details
 const pkg = require('#root/package.json');
-const { loadConfigJsonWithSynchedShadow, getLocalShadowOfProjectRoot } = require('#features/configManager/configManager');
+const { loadConfigJsonWithSynchedShadow, getLocalShadowOfProjectRoot } = require('#root/src/features/shadowManager/shadowManager.js');
 const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
 const os = require('os');
 const fs = require('fs');

@@ -81,7 +81,7 @@ pater --verbose --echo hi
         - update `/config.js`
         - OPEN_CONFIG_FILE_WHILE_CHECKING_CONFIG
     2. configuration for shadowing file at local machine
-        - update file `/src/features/configManager/configManager.json`
+        - update file `/src/features/shadowManager/shadowManager.json`
     3. feature level configuration
         - update `/src/features/copyLocalChanges/copyLocalChangesConfig.json`
         - provide `repoRoot`
