@@ -1,4 +1,4 @@
-const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
+const { loadConfigJsonWithSynchedShadow } = require('#root/src/features/shadowManager/shadowManager.js');
 const appConfigJson = loadConfigJsonWithSynchedShadow(require.resolve('#root/config.json'));
 const menuConfigJson = loadConfigJsonWithSynchedShadow(require.resolve('./menuConfig.json'));
 const { copyAll } = require(`#features/copyLocalChanges/${appConfigJson.data.SELECTED_APPROACH.COPY_LOCAL_CHANGES}`);

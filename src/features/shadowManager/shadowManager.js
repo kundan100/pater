@@ -1,4 +1,4 @@
-const configManagerJson = require('./configManager.json');
+const shadowManagerJson = require('./shadowManager.json');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -7,14 +7,24 @@ const os = require('os');
 // const clog = require('#shared/clog-with-fallback');
 const _DEBUG_LOG_ENABLED = false; // set to true to enable debug logs in this file
 
-const configManagerData = Array.isArray(configManagerJson.data) ? configManagerJson.data : [];
+// const shadowManagerData = Array.isArray(shadowManagerJson.data) ? shadowManagerJson.data : [];
+const shadowManagerData = shadowManagerJson.data || {};
+const filesToBeShadowed = Array.isArray(shadowManagerData.filesToBeShadowed)
+    ? shadowManagerData.filesToBeShadowed
+    : [];
+const shadowFolderUnderUserHome = typeof shadowManagerData.shadowFolderUnderUserHome === 'string' && shadowManagerData.shadowFolderUnderUserHome.length
+    ? shadowManagerData.shadowFolderUnderUserHome
+    : '__cyk';
 
 // helpers
 const _helpers = {
     // path for user-machine e.g. c:/users/<user-name>/
     userHomePath: os.homedir(),
     projectRoot: path.dirname(require.resolve('#root/package.json')),
-    localShadowOfProjectRoot: path.join(os.homedir(), '__cyk', ...require('#root/package.json').name.split('/'))
+    localShadowOfProjectRoot: path.join(os.homedir(), shadowFolderUnderUserHome, ...require('#root/package.json').name.split('/')),
+    getLocalShadowOfProjectRoot: function () {
+        return _helpers.localShadowOfProjectRoot;
+    }
 };
 
 function createShadowOfAllConfigFiles() {
@@ -23,8 +33,8 @@ function createShadowOfAllConfigFiles() {
     _DEBUG_LOG_ENABLED && console.debug(" - userHomePath:", _helpers.userHomePath); // C:\Users\<user-name>
     _DEBUG_LOG_ENABLED && console.debug(" - path for project root (not the current directory):", _helpers.projectRoot); // D:\kk\kk_c_t\__kk100github\pater
     _DEBUG_LOG_ENABLED && console.debug(" - local shadow of project root:", _helpers.localShadowOfProjectRoot); // C:\Users\<user-name>\__cyk\@kundan100\pater
-    _DEBUG_LOG_ENABLED && console.debug("configManagerData.length: ", configManagerData.length);
-    for (const configItem of configManagerData) {
+    _DEBUG_LOG_ENABLED && console.debug("filesToBeShadowed.length: ", filesToBeShadowed.length);
+    for (const configItem of filesToBeShadowed) {
         _DEBUG_LOG_ENABLED && console.debug(` - Config File Path (in json): ${configItem.filePath}, Config ID: ${configItem.id}`); // - Config File Path (in json): /config.json, Config ID: appConfig
         // source file
         const sourceFilePath = path.resolve(path.join(_helpers.projectRoot, configItem.filePath));
@@ -107,4 +117,4 @@ function loadConfigJsonWithSynchedShadow(filePath) {
     return mergedFile;
 }
 
-module.exports = { createShadowOfAllConfigFiles, loadConfigJsonWithSynchedShadow };
+module.exports = { createShadowOfAllConfigFiles, loadConfigJsonWithSynchedShadow, getLocalShadowOfProjectRoot: _helpers.getLocalShadowOfProjectRoot };
