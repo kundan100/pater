@@ -1,5 +1,5 @@
 {
-    "filePath": "/src/features/copy-local-changes/local-changes-manifest.json",
+    "filePath": "/src/features/copyLocalChanges/copyLocalChangesConfig.json",
     "id": "copyLocalChangesConfig",
     "data": [
         {
