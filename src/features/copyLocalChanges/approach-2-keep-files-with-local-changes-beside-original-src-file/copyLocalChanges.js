@@ -2,7 +2,7 @@
 // approach-2: keep files with local changes beside the original src file
 //
 // Convention:
-//   For each file listed in local-changes-manifest.json, a companion file
+//   For each file listed in copyLocalChangesConfig.json, a companion file
 //   named  cykLocal__<filename>  must exist in the same directory as the
 //   original.  This script reads that companion and overwrites the original.
 //
@@ -14,16 +14,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const localChangesManifestJson = require('../local-changes-manifest.json');
-const localChangesManifestData = Array.isArray(localChangesManifestJson.data) ? localChangesManifestJson.data : [];
+const copyLocalChangesConfigJson = require('../copyLocalChangesConfig.json');
+const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
 const clog = require('#shared/clog-with-fallback');
 
 const CYK_PREFIX = 'cykLocal__';
 
 function copyAll({ dryRun = false, verbose = false } = {}) {
-  for (const entry of localChangesManifestData) {
-    // get repoRoot from the manifest for more flexibility and less coupling with config.js
+  for (const entry of copyLocalChangesConfigData) {
+    // get repoRoot from the config for more flexibility and less coupling with config.js
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
       throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);

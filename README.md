@@ -24,7 +24,7 @@
     - use case: keep local changes in a local companion file and apply these changes in actual source file when needed.
     - In your repo, make a copy of any source file and rename that by adding a prefix `cykLocal__`.
     - You can gitignore/exclude this file from showing up in git-changes section.
-    - update `/config.js` and `/src/features/copy-local-changes/local-changes-manifest.json` as explained in section `Project setup for local dev`
+    - update `/config.js` and `/src/features/copyLocalChanges/copyLocalChangesConfig.json` as explained in section `Project setup for local dev`
 4. Show status
     - shows information (machine, processes, task-manager info  etc...)
 5. Start service
@@ -83,7 +83,7 @@ pater --verbose --echo hi
     2. configuration for shadowing file at local machine
         - update file `/src/features/configManager/configManager.json`
     3. feature level configuration
-        - update `/src/features/copy-local-changes/local-changes-manifest.json`
+        - update `/src/features/copyLocalChanges/copyLocalChangesConfig.json`
         - provide `repoRoot`
         - provide `files` (list of files) which needs to have local changes.
 4. for local testing of changes (without publishing or install):
