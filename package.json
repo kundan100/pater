@@ -1,7 +1,7 @@
 {
   "name": "@kundan100/pater",
   "description": "personal assistant in terminal for devs, for recurring workflows.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "imports": {
     "#root/*": "./*",
     "#shared/*": "./src/shared/*.js",
