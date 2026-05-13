@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // appConfig helper — encapsulates logic for printing app's config file details
 const pkg = require('#root/package.json');
-const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
+const { loadConfigJsonWithSynchedShadow, getLocalShadowOfProjectRoot } = require('#features/configManager/configManager');
 const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
 const os = require('os');
 const fs = require('fs');
@@ -28,7 +28,8 @@ function printAppConfigDetails() {
     // print details of localAppConfigShadow
     clog.log("localAppconfigShadow file details:");
     clog.log(" - userHomePath:", userHomePath);
-    clog.log(" - localAppConfigShadow path:", path.join(userHomePath, '__cyk', ...pkg.name.split('/'), 'config.json'));
+    // clog.log(" - localAppConfigShadow path:", path.join(userHomePath, '__cyk', ...pkg.name.split('/'), 'config.json'));
+    clog.log(" - localAppConfigShadow path:", path.join(getLocalShadowOfProjectRoot(), 'config.json'));
 }
 
 async function openAppConfigFile() {
