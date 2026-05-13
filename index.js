@@ -4,7 +4,7 @@
 // this is to show color outputs in terminal
 process.env.FORCE_COLOR = process.env.FORCE_COLOR || '1';
 
-const { createShadowOfAllConfigFiles } = require('#features/configManager/configManager');
+const { createShadowOfAllConfigFiles } = require('#root/src/features/shadowManager/shadowManager.js');
 const handleArgs = require('#args/handleArgs');
 const pkg = require('./package.json');
 const clog = require('#shared/clog-with-fallback');

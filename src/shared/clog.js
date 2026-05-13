@@ -20,7 +20,7 @@
  */
 
 // const appConfigJson = require(`#root/config.json`);
-const { loadConfigJsonWithSynchedShadow } = require('#features/configManager/configManager');
+const { loadConfigJsonWithSynchedShadow } = require('#root/src/features/shadowManager/shadowManager.js');
 const appConfigJson = loadConfigJsonWithSynchedShadow('#root/config.json');
 // console.log('[./src/shared/clog.js] Loaded appConfigJson:', appConfigJson);
 
