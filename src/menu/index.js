@@ -5,7 +5,7 @@ const { copyAll } = require(`#features/copyLocalChanges/${appConfigJson.data.SEL
 const { killPort } = require('#features/killPorts/killPort');
 const { clearTempFiles } = require('#features/system/clearTempFiles');
 const { systemStatus } = require('#features/systemStatus/index');
-const { createRl } = require('#shared/askForUserEntry');
+const { askForUserEntry } = require('#shared/askForUserEntry');
 const clog = require('#shared/clog-with-fallback');
 const { runExternalAction } = require('./externalActionRunner');
 
@@ -38,103 +38,53 @@ const _helpers = {
     clog.info('press x to exit;');
   },
 
-  // ask prompts the user using the provided readline instance and resolver
-  ask: function (rl, resolve) {
-    rl.question(`\nSelect an option (1-${enabledMenuItems.length}): `, (answer) => {
-      // const n = Number(answer && answer.trim());
-      const n = answer && answer.trim();
-      return _helpers.processSelection(n, rl, resolve);
-    });
-  },
-
-  // factory that returns a raw stdin data handler for this run
-  createOnData: function (rl, resolve) {
-    let buffer = '';
-    const handler = (chunk) => {
-      buffer += String(chunk);
-      // on first newline, try to process selection
-      if (buffer.indexOf('\n') !== -1) {
-        // mark that we've received input so the fallback timeout won't re-prompt
-        handler.processed = true;
-        const line = buffer.split(/\r?\n/)[0];
-        // remove listener to avoid duplicate handling
-        process.stdin.removeListener('data', handler);
-        // directly process the value
-        const n = Number(line && line.trim());
-        if (Number.isInteger(n) && n >= 1 && n <= enabledMenuItems.length) {
-          return _helpers.processSelection(n, rl, resolve);
-        }
-        // if invalid, fall back to interactive ask (may or may not work)
-        clog.warn('Invalid selection from stdin, falling back to interactive prompt.');
-        _helpers.ask(rl, resolve);
-      }
-    };
-    return handler;
-  },
-
-  // centralized selection processing to avoid duplication between ask and createOnData
-  processSelection: function (n, rl, resolve) {
-    // clog.log('n:', n, Number.isInteger(n));
-    // chars (x / m / b) are valid user entries that are not numbers, so handle those first
-    if (!Number.isInteger(n)) {
-      if (String(n).toLowerCase() === 'x') {
-        // x => exit
-        clog.log('Exiting per user request.');
-        rl.close();
-        return resolve();
-      }else if (String(n).toLowerCase() === 'm') {
-        // m => go back to main menu. to be implemented.
-        // clog.log('Returning to main menu per user request.');
-        // rl.close();
-        // return handleMenu().then(resolve);
-      } else if (String(n).toLowerCase() === 'b') {
-        // b => go back to previous menu. to be implemented.
-        // clog.log('Going back to previous menu per user request.');
-        // rl.close();
-        // return resolve(); // in a more complex menu system, this would trigger going back to the previous menu instead of exiting
-      }
+  // handleSelection handles all input-parsing and dispatch for a single user entry.
+  // Returns true when the menu loop should exit, false to re-prompt.
+  handleSelection: async function (n) {
+    // handle special single-char commands
+    if (String(n).toLowerCase() === 'x') {
+      clog.log('Exiting per user request.');
+      return true;
     }
-    // attempt to parse a number for menu selection; if it's not a valid integer in range, re-prompt
-    n = Number(n);
-    if (!Number.isInteger(n) || n < 1 || n > enabledMenuItems.length) {
-      // for any other invalid input, show a warning and re-prompt
+    // m / b reserved for future menu navigation — ignore for now
+    if (String(n).toLowerCase() === 'm' || String(n).toLowerCase() === 'b') {
+      return false;
+    }
+
+    const num = Number(n);
+    if (!Number.isInteger(num) || num < 1 || num > enabledMenuItems.length) {
       clog.warn('Invalid selection, please try again.');
-      return _helpers.ask(rl, resolve);
+      return false;
     }
-    // valid number selection; find the corresponding menu item (accounting for 0-based index)
-    const item = enabledMenuItems[n - 1];
+
+    // valid selection — dispatch to handler
+    const item = enabledMenuItems[num - 1];
+    const key = item && item.key ? item.key : null;
     const selectionLabel = item && item.label ? item.label : String(item);
-    const invoke = async () => {
-      // dispatch by the menu item's `key` so ordering in menuConfig.json can change
-      const key = item && item.key ? item.key : null;
-      clog.info(`\nYou selected: ${selectionLabel} (key: ${key})`);
-      // first try to run an external action (local machine scope) if defined for this item
-      try {
-        const handled = await runExternalAction(item, rl);
-        if (handled) return; // if not handled by externalActionRunner, continue to internal handlers
-      } catch(e) {
-        clog.error(`Error running external action for item '${selectionLabel}':`, e && e.message ? e.message : e);
-        return;
-      }
-      // internal handlers (project scope)
-      if (key && typeof _helpers.menuHandlers[key] === 'function') {
-        return _helpers.menuHandlers[key](item, rl);
-      }
-      // helpful fallback message when a menu key has no handler
-      clog.warn(`\nYou selected: ${selectionLabel}; no handler defined for key '${key}'`);
-      return undefined;
-    };
-    // close the menu rl before running the handler so any sub-prompts inside
-    // the handler can create their own fresh readline instance without conflict
-    rl.close();
-    return Promise.resolve(invoke()).then(() => {
-      resolve();
-    });
+    clog.info(`\nYou selected: ${selectionLabel} (key: ${key})`);
+
+    // first try external action (local machine scope)
+    try {
+      const handled = await runExternalAction(item);
+      if (handled) return true;
+    } catch (e) {
+      clog.error(`Error running external action for item '${selectionLabel}':`, e && e.message ? e.message : e);
+      return true;
+    }
+
+    // internal handler
+    if (key && typeof _helpers.menuHandlers[key] === 'function') {
+      await _helpers.menuHandlers[key](item);
+      return true;
+    }
+
+    clog.warn(`\nYou selected: ${selectionLabel}; no handler defined for key '${key}'`);
+    return true;
   },
 
   // named handlers for each menu item; keyed by `menuConfig.json` item `key`.
   menuHandlers: {
-    status: (item) => { 
+    status: (item) => {
       clog.log(`\n[handler] ${item.label} - status: OK`);
       systemStatus();
     },
@@ -163,8 +113,7 @@ const _helpers = {
           clog.error('\n[handler] copy_local_changes error:', err && err.message ? err.message : err);
         }
       })();
-    }
-    ,
+    },
     clear_temp_files: (item) => {
       return (async () => {
         try {
@@ -179,49 +128,20 @@ const _helpers = {
   }
 };
 
-function handleMenu() {
-  return new Promise((resolve) => {
-    //
-    _helpers.setEnabledMenuItems();
-    // print the menu
-    _helpers.printMenu();
+async function handleMenu() {
+  _helpers.setEnabledMenuItems();
+  _helpers.printMenu();
 
-    // if stdin is not a TTY we still attempt to read a selection from stdin
-    // some environments report false for isTTY but still accept keyboard input
-    if (!process.stdin.isTTY) {
-      clog.log('\nNote: stdin is not a TTY. If your terminal supports input, type a number and press Enter.');
-    }
+  if (!process.stdin.isTTY) {
+    clog.log('\nNote: stdin is not a TTY. If your terminal supports input, type a number and press Enter.');
+  }
 
-    const rl = createRl();
-
-    // use helper.ask which takes `(rl, resolve)`
-
-    // if stdin is not a TTY, also listen for raw data in case the environment
-    // doesn't drive readline prompts visibly but sends data to stdin.
-    if (!process.stdin.isTTY) {
-      // create an onData handler scoped per-run via helper factory so it's
-      // easier to test and reason about.
-      const onData = _helpers.createOnData(rl, resolve);
-
-      // resume stdin and wait briefly for data; if none arrives, open the
-      // interactive prompt which will still try to read input if possible.
-      try {
-        process.stdin.resume();
-        process.stdin.on('data', onData);
-        // give a short grace period for piped input to arrive
-        setTimeout(() => {
-          if (onData.processed) return;
-          process.stdin.removeListener('data', onData);
-          // if nothing processed yet, try interactive ask
-          _helpers.ask(rl, resolve);
-        }, 250);
-      } catch (err) {
-        _helpers.ask(rl, resolve);
-      }
-    } else {
-      _helpers.ask(rl, resolve);
-    }
-  });
+  // loop until a valid selection or explicit exit
+  while (true) {
+    const raw = await askForUserEntry(`\nSelect an option (1-${enabledMenuItems.length}): `);
+    const done = await _helpers.handleSelection(raw && raw.trim());
+    if (done) return;
+  }
 }
 
 module.exports = { handleMenu };
