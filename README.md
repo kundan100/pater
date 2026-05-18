@@ -108,23 +108,23 @@ pater --verbose --echo hi
 3. connect this (your local utility) with menu-option.
 ```
 {
-			"key": "custom_your_world",
-			"label": "Custom: your world",
-			"enabled": true,
-			"action": {
-			"sourceType": "localMachine",
-			"sourceType__note": {
-				"localMachine": "Script should be present on the user's local machine at the specified sourcePath.",
-				"projectScope": "Script should be present within the project directory at the specified sourcePath."
-			},
-			"sourceBase": "userHomePath",
-			"sourceBase__note": {
-				"userHomePath": "Script path is relative to the user's home directory (C:/Users/<user-name>).",
-				"projectRoot": "Script path is relative to the project root directory."
-			},
-			"sourceScript": "/__cyk/util_scripts/printHi/index.js"
-			}
-		}
+    "key": "custom_your_world",
+    "label": "Custom: your world",
+    "enabled": true,
+    "action": {
+    "sourceType": "localMachine",
+    "sourceType__note": {
+        "localMachine": "Script should be present on the user's local machine at the specified sourcePath.",
+        "projectScope": "Script should be present within the project directory at the specified sourcePath."
+    },
+    "sourceBase": "userHomePath",
+    "sourceBase__note": {
+        "userHomePath": "Script path is relative to the user's home directory (C:/Users/<user-name>).",
+        "projectRoot": "Script path is relative to the project root directory."
+    },
+    "sourceScript": "/__cyk/util_scripts/printHi/index.js"
+    }
+}
 ```
 
 ### Code workflow
