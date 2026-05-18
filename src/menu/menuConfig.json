@@ -45,15 +45,16 @@
 			"action": {
 				"sourceType": "localMachine",
 				"sourceType__note": {
-					"localMachine": "Script should be present on the user's local machine at the specified sourcePath.",
-					"projectScope": "Script should be present within the project directory at the specified sourcePath."
+					"localMachine": "Script should be present on the user's local machine at the specified sourceScript.",
+					"projectScope": "Script should be present within the project directory at the specified sourceScript."
 				},
 				"sourceBase": "userHomePath",
 				"sourceBase__note": {
 					"userHomePath": "Script path is relative to the user's home directory (C:/Users/<user-name>).",
 					"projectRoot": "Script path is relative to the project root directory."
 				},
-				"sourceScript": "/__cyk/util_scripts/printHi/index.js"
+				"sourceScript": "/__cyk/util_scripts/printHi/index.js",
+				"sourceScript__note": "e.g. '/__cyk/util_scripts/printHi/index.js'"
 			}
 		},
 		{ 
