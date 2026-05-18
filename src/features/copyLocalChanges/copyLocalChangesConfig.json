@@ -4,7 +4,8 @@
     "data": [
         {
             "repo": "REPO1_ROOT",
-            "repoRoot": "D:\\kk\\zeb_codes\\phoenix-services",
+            "repoRoot": "",
+            "repoRoot__note": "example for windows (D:\\path-to\\repoRoot)",
             "files": [
                 "ui\\package.json",
                 "ui\\.husky\\pre-commit",
@@ -14,7 +15,8 @@
         },
         {
             "repo": "REPO2_ROOT",
-            "repoRoot": "D:\\kk\\zeb_codes\\zds-react",
+            "repoRoot": "",
+            "repoRoot__note": "example for windows (D:\\path-to\\repoRoot)",
             "files": [
                 "package.json"
             ]

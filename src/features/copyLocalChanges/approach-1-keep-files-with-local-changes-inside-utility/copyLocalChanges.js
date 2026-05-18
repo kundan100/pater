@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const copyLocalChangesConfigJson = require('../copyLocalChangesConfig.json');
+const { loadConfigJsonWithSynchedShadow } = require('#root/src/features/shadowManager/shadowManager.js');
+const copyLocalChangesConfigJson = loadConfigJsonWithSynchedShadow('../copyLocalChangesConfig.json');
 
 const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
@@ -9,12 +10,33 @@ function log(...args) {
   console.log('[copyLocalChanges]', ...args);
 }
 
-function copyAll({ dryRun = false, verbose = false } = {}) {
+async function copyAll({ dryRun = false, verbose = false } = {}) {
   // loop through copyLocalChangesConfig entries
   for (const entry of copyLocalChangesConfigData) {
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
-      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);
+      const { askForUserEntry } = require('#shared/askForUserEntry');
+      const { openFile } = require('#shared/openFile');
+      const prompt = `repoRoot not found for entry.repo: ${entry.repo}. i am going to open the config file where you can set the repoRoot and once done save and close that file. should i open the file (yes/no)? `;
+      try {
+        const answer = await askForUserEntry(prompt);
+        if (answer && String(answer).trim().toLowerCase().startsWith('y')) {
+          const cfgPath = require.resolve('../copyLocalChangesConfig.json');
+          try {
+            await openFile(cfgPath, '');
+            console.log(`Opened config file. After updating 'repoRoot', re-run this command.`);
+            // give the spawned editor a small window to detach properly on Windows
+            setTimeout(() => process.exit(0), 200);
+            return;
+          } catch (openErr) {
+            if (verbose) console.debug('[copyLocalChanges] openFile failed:', openErr && openErr.message ? openErr.message : openErr);
+            // fall through to the final error throw below
+          }
+        }
+      } catch (e) {
+        if (verbose) console.debug('[copyLocalChanges] prompt/open error:', e && e.message ? e.message : e);
+      }
+      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}. Please set 'repoRoot' in src/features/copyLocalChanges/copyLocalChangesConfig.json or create a shadow override using the shadow manager.`);
     }
     //
     const LOCAL_FILES_DIR = path.join(repoRoot, 'files-with-local-changes');
@@ -91,14 +113,16 @@ function parseArgs(argv) {
 }
 
 if (require.main === module) {
-  try {
-    const opts = parseArgs(process.argv);
-    copyAll(opts);
-    log('done');
-  } catch (err) {
-    console.error('[copyLocalChanges] error:', err && err.message ? err.message : err);
-    process.exit(1);
-  }
+  (async () => {
+    try {
+      const opts = parseArgs(process.argv);
+      await copyAll(opts);
+      log('done');
+    } catch (err) {
+      console.error('[copyLocalChanges] error:', err && err.message ? err.message : err);
+      process.exit(1);
+    }
+  })();
 }
 
 module.exports = { copyAll };

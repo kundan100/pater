@@ -124,8 +124,10 @@ const _helpers = {
       clog.warn(`\nYou selected: ${selectionLabel}; no handler defined for key '${key}'`);
       return undefined;
     };
+    // close the menu rl before running the handler so any sub-prompts inside
+    // the handler can create their own fresh readline instance without conflict
+    rl.close();
     return Promise.resolve(invoke()).then(() => {
-      rl.close();
       resolve();
     });
   },
@@ -154,8 +156,8 @@ const _helpers = {
       return (async () => {
         try {
           clog.info('\n[handler] copy_local_changes - running');
-          // run dry-run to avoid accidental writes; module logs its progress
-          copyAll({ dryRun: false, verbose: true });
+          // run and await copyAll so interactive prompts (openFile/ask) work
+          await copyAll({ dryRun: false, verbose: true });
           clog.log('\n[handler] copy_local_changes - done');
         } catch (err) {
           clog.error('\n[handler] copy_local_changes error:', err && err.message ? err.message : err);
