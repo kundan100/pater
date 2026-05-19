@@ -19,4 +19,4 @@ function askForUserEntry(promptText, rl) {
   });
 }
 
-module.exports = { createRl, askForUserEntry };
+module.exports = { askForUserEntry };
