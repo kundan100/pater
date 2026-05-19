@@ -14,19 +14,27 @@
 const fs = require('fs');
 const path = require('path');
 
-const copyLocalChangesConfigJson = require('../copyLocalChangesConfig.json');
+const { loadConfigJsonWithSynchedShadow } = require('#root/src/features/shadowManager/shadowManager.js');
+const copyLocalChangesConfigJson = loadConfigJsonWithSynchedShadow(require.resolve('../copyLocalChangesConfig.json'));
 const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
 const clog = require('#shared/clog-with-fallback');
+const { promptToSetConfigField } = require('#shared/promptToSetConfigField');
 
 const CYK_PREFIX = 'cykLocal__';
 
-function copyAll({ dryRun = false, verbose = false } = {}) {
+async function copyAll({ dryRun = false, verbose = false } = {}) {
   for (const entry of copyLocalChangesConfigData) {
-    // get repoRoot from the config for more flexibility and less coupling with config.js
+    // get repoRoot from the config (merged with local shadow) for more flexibility
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
-      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);
+      const result = await promptToSetConfigField({
+        fieldDesc: `repoRoot for entry.repo: ${entry.repo}`,
+        configPath: require.resolve('../copyLocalChangesConfig.json'),
+        verbose,
+      });
+      if (result === 'opened') return;
+      throw new Error(`repoRoot not set for entry.repo: ${entry.repo}. Set 'repoRoot' in copyLocalChangesConfig.json or create a shadow override.`);
     }
 
     for (const relPath of entry.files) {
@@ -69,14 +77,16 @@ function parseArgs(argv) {
 }
 
 if (require.main === module) {
-  try {
-    const opts = parseArgs(process.argv);
-    copyAll(opts);
-    clog.log('done');
-  } catch (err) {
-    clog.error(err && err.message ? err.message : err);
-    process.exit(1);
-  }
+  (async () => {
+    try {
+      const opts = parseArgs(process.argv);
+      await copyAll(opts);
+      clog.log('done');
+    } catch (err) {
+      clog.error(err && err.message ? err.message : err);
+      process.exit(1);
+    }
+  })();
 }
 
 module.exports = { copyAll };

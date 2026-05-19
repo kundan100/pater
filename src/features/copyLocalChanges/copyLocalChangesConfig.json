@@ -4,7 +4,7 @@
     "data": [
         {
             "repo": "REPO1_ROOT",
-            "repoRoot": "D:\\kk\\zeb_codes\\phoenix-services",
+            "repoRoot": "",
             "files": [
                 "ui\\package.json",
                 "ui\\.husky\\pre-commit",
@@ -14,10 +14,27 @@
         },
         {
             "repo": "REPO2_ROOT",
-            "repoRoot": "D:\\kk\\zeb_codes\\zds-react",
+            "repoRoot": "",
             "files": [
                 "package.json"
             ]
         }
-    ]
+    ],
+    "noteAndExampleJson": {
+        "filePath": "",
+        "id": "",
+        "data": [
+            {
+                "repo": "name of repo, just as identifier",
+                "repoRoot": "example for windows (D:\\path-to\\repoRoot)",
+                "files": [
+                    "relative-path-from-repoRoot\\filename.ext",
+                    "just-file-name-if-file-is-at-repoRoot",
+                    "examples below...",
+                    "ui\\.husky\\pre-commit",
+                    "package.json"
+                ]
+            }
+        ]
+    }
 }

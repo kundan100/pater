@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const copyLocalChangesConfigJson = require('../copyLocalChangesConfig.json');
+const { loadConfigJsonWithSynchedShadow } = require('#root/src/features/shadowManager/shadowManager.js');
+const { promptToSetConfigField } = require('#shared/promptToSetConfigField');
+const copyLocalChangesConfigJson = loadConfigJsonWithSynchedShadow('../copyLocalChangesConfig.json');
 
 const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
@@ -9,12 +11,18 @@ function log(...args) {
   console.log('[copyLocalChanges]', ...args);
 }
 
-function copyAll({ dryRun = false, verbose = false } = {}) {
+async function copyAll({ dryRun = false, verbose = false } = {}) {
   // loop through copyLocalChangesConfig entries
   for (const entry of copyLocalChangesConfigData) {
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
-      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}`);
+      const result = await promptToSetConfigField({
+        fieldDesc: `repoRoot for entry.repo: ${entry.repo}`,
+        configPath: require.resolve('../copyLocalChangesConfig.json'),
+        verbose,
+      });
+      if (result === 'opened') return;
+      throw new Error(`repoRoot not set for entry.repo: ${entry.repo}. Set 'repoRoot' in copyLocalChangesConfig.json or create a shadow override.`);
     }
     //
     const LOCAL_FILES_DIR = path.join(repoRoot, 'files-with-local-changes');
@@ -91,14 +99,16 @@ function parseArgs(argv) {
 }
 
 if (require.main === module) {
-  try {
-    const opts = parseArgs(process.argv);
-    copyAll(opts);
-    log('done');
-  } catch (err) {
-    console.error('[copyLocalChanges] error:', err && err.message ? err.message : err);
-    process.exit(1);
-  }
+  (async () => {
+    try {
+      const opts = parseArgs(process.argv);
+      await copyAll(opts);
+      log('done');
+    } catch (err) {
+      console.error('[copyLocalChanges] error:', err && err.message ? err.message : err);
+      process.exit(1);
+    }
+  })();
 }
 
 module.exports = { copyAll };

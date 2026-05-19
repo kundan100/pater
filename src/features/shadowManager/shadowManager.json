@@ -3,11 +3,6 @@
         "shadowFolderUnderUserHome": "__cyk",
         "filesToBeShadowed": [
             {
-                "id": "tempForTesting",
-                "filePath": "/folder1/folder2/config.js",
-                "filePath_Note": "always start with slash (/) and use forward slashes, even on Windows, to avoid issues with backslashes in paths."
-            },
-            {
                 "id": "appConfig",
                 "filePath": "/config.json"
             },
@@ -20,5 +15,17 @@
                 "filePath": "/src/features/copyLocalChanges/copyLocalChangesConfig.json"
             }
         ]
+    },
+    "noteAndExampleJson": {
+        "data": {
+            "shadowFolderUnderUserHome": "__cyk",
+            "filesToBeShadowed": [
+                {
+                    "id": "tempForTesting",
+                    "filePath": "/folder1/folder2/config.js",
+                    "filePath_Note": "always start with slash (/) and use forward slashes, even on Windows, to avoid issues with backslashes in paths."
+                }
+            ]
+        }
     }
 }
