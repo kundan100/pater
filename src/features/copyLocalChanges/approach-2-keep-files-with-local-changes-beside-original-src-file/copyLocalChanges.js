@@ -19,6 +19,7 @@ const copyLocalChangesConfigJson = loadConfigJsonWithSynchedShadow(require.resol
 const copyLocalChangesConfigData = Array.isArray(copyLocalChangesConfigJson.data) ? copyLocalChangesConfigJson.data : [];
 
 const clog = require('#shared/clog-with-fallback');
+const { promptToSetConfigField } = require('#shared/promptToSetConfigField');
 
 const CYK_PREFIX = 'cykLocal__';
 
@@ -27,28 +28,13 @@ async function copyAll({ dryRun = false, verbose = false } = {}) {
     // get repoRoot from the config (merged with local shadow) for more flexibility
     const repoRoot = entry.repoRoot;
     if (!repoRoot) {
-      const { askForUserEntry } = require('#shared/askForUserEntry');
-      const { openFile } = require('#shared/openFile');
-      const prompt = `repoRoot not found for entry.repo: ${entry.repo}. i am going to open the config file where you can set the repoRoot and once done save and close that file. should i open the file (yes/no)? `;
-      try {
-        const answer = await askForUserEntry(prompt);
-        if (answer && String(answer).trim().toLowerCase().startsWith('y')) {
-          const cfgPath = require.resolve('../copyLocalChangesConfig.json');
-          try {
-            await openFile(cfgPath, '');
-            clog.log(`Opened config file. After updating 'repoRoot', re-run this command.`);
-            // give the spawned editor a small window to detach properly on Windows
-            setTimeout(() => process.exit(0), 200);
-            return;
-          } catch (openErr) {
-            if (verbose) clog.debug && clog.debug('[copyLocalChanges] openFile failed:', openErr && openErr.message ? openErr.message : openErr);
-            // fall through to the final error throw below
-          }
-        }
-      } catch (e) {
-        if (verbose) clog.debug && clog.debug('[copyLocalChanges] prompt/open error:', e && e.message ? e.message : e);
-      }
-      throw new Error(`repoRoot not found for entry.repo: ${entry.repo}. Please set 'repoRoot' in src/features/copyLocalChanges/copyLocalChangesConfig.json or create a shadow override using the shadow manager.`);
+      const result = await promptToSetConfigField({
+        fieldDesc: `repoRoot for entry.repo: ${entry.repo}`,
+        configPath: require.resolve('../copyLocalChangesConfig.json'),
+        verbose,
+      });
+      if (result === 'opened') return;
+      throw new Error(`repoRoot not set for entry.repo: ${entry.repo}. Set 'repoRoot' in copyLocalChangesConfig.json or create a shadow override.`);
     }
 
     for (const relPath of entry.files) {
