@@ -44,17 +44,8 @@
 			"enabled": false,
 			"action": {
 				"sourceType": "localMachine",
-				"sourceType__note": {
-					"localMachine": "Script should be present on the user's local machine at the specified sourceScript.",
-					"projectScope": "Script should be present within the project directory at the specified sourceScript."
-				},
 				"sourceBase": "userHomePath",
-				"sourceBase__note": {
-					"userHomePath": "Script path is relative to the user's home directory (C:/Users/<user-name>).",
-					"projectRoot": "Script path is relative to the project root directory."
-				},
-				"sourceScript": "/__cyk/util_scripts/printHi/index.js",
-				"sourceScript__note": "e.g. '/__cyk/util_scripts/printHi/index.js'"
+				"sourceScript": "/__cyk/util_scripts/printHi/index.js"
 			}
 		},
 		{ 
@@ -62,5 +53,46 @@
 			"label": "Exit",
 			"enabled": false
 		}
-	]
+	],
+	"noteAndExampleJson": {
+		"filePath": "",
+		"id": "",
+		"data": [
+			{ 
+				"key": "clear_temp_files",
+				"label": "System > Performance > Clear temp files",
+				"enabled": true
+			},
+			{
+				"key": "kill_port",
+				"label": "Kill Port",
+				"enabled": true,
+				"subMenus": [
+					{
+						"key": "tbd",
+						"label": "to be decided later"
+					}
+				]
+			},
+			{
+				"key": "custom_print_hi",
+				"label": "Custom print hi",
+				"enabled": false,
+				"action": {
+					"sourceType": "options (localMachine / projectScope)",
+					"sourceType__note": {
+						"localMachine": "Script should be present on the user's local machine at the specified sourceScript.",
+						"projectScope": "Script should be present within the project directory at the specified sourceScript."
+					},
+					"sourceBase": "options (userHomePath / projectRoot)",
+					"sourceBase__note": {
+						"userHomePath": "Script path is relative to the user's home directory (C:/Users/<user-name>).",
+						"projectRoot": "Script path is relative to the project root directory."
+					},
+					"sourceScript": "/__cyk/util_scripts/printHi/index.js",
+					"sourceScript__note": "e.g. '/__cyk/util_scripts/printHi/index.js'"
+				}
+			}
+		]
+	}
 }
